@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Splitwise.Core.Controllers
 {
@@ -9,5 +10,15 @@ namespace Splitwise.Core.Controllers
     [ApiController]
     public class GroupController : Controller
     {
+        public GroupController()
+        {
+
+        }
+        [HttpGet]
+        public string Index()
+        {
+            return "Hello SP";
+        }
     }
+    
 }
