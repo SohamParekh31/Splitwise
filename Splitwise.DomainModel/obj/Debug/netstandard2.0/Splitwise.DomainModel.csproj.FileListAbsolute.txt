@@ -1,0 +1,5 @@
+D:\CSharp\Splitwise\Splitwise.DomainModel\bin\Debug\netstandard2.0\Splitwise.DomainModel.deps.json
+D:\CSharp\Splitwise\Splitwise.DomainModel\bin\Debug\netstandard2.0\Splitwise.DomainModel.dll
+D:\CSharp\Splitwise\Splitwise.DomainModel\obj\Debug\netstandard2.0\Splitwise.DomainModel.csprojAssemblyReference.cache
+D:\CSharp\Splitwise\Splitwise.DomainModel\obj\Debug\netstandard2.0\Splitwise.DomainModel.AssemblyInfoInputs.cache
+D:\CSharp\Splitwise\Splitwise.DomainModel\obj\Debug\netstandard2.0\Splitwise.DomainModel.AssemblyInfo.cs
