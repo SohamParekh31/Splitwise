@@ -19,7 +19,7 @@ namespace Splitwise.DomainModel.Models
         [ForeignKey("CreatedBy")]
         public ApplicationUser User { get; set; }
         public bool IsSettled { get; set; }
-        public boo IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }

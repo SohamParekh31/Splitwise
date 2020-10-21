@@ -11,3 +11,4 @@ D:\CSharp\Splitwise\Splitwise.Core\obj\Debug\netstandard2.1\Splitwise.Core.Assem
 D:\CSharp\Splitwise\Splitwise.Core\obj\Debug\netstandard2.1\Splitwise.Core.csproj.CopyComplete
 D:\CSharp\Splitwise\Splitwise.Core\obj\Debug\netstandard2.1\Splitwise.Core.dll
 D:\CSharp\Splitwise\Splitwise.Core\obj\Debug\netstandard2.1\Splitwise.Core.pdb
+D:\CSharp\Splitwise\Splitwise.Core\obj\Debug\netstandard2.1\Splitwise.Core.csproj.CoreCompileInputs.cache
