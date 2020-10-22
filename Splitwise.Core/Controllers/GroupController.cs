@@ -33,7 +33,7 @@ namespace Splitwise.Core.Controllers
         }
         [HttpPut]
         [Route("{id}")]
-        public void EditGroup(string id)
+        public void EditGroup(string id,AddGroup addGroup)
         {
             throw new NotImplementedException();
         }

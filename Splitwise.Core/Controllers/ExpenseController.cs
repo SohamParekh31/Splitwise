@@ -26,13 +26,13 @@ namespace Splitwise.Core.Controllers
             throw new NotImplementedException();
         }
         [HttpPost]
-        public void PostExpense()
+        public void PostExpense(AddExpense addExpense)
         {
             throw new NotImplementedException();
         }
         [HttpPut]
         [Route("{id}")]
-        public void EditExpense(string id)
+        public void EditExpense(string id, AddExpense addExpense)
         {
             throw new NotImplementedException();
         }
