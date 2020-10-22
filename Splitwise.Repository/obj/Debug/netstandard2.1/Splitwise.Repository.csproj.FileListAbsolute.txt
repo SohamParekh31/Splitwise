@@ -6,7 +6,7 @@ D:\CSharp\Splitwise\Splitwise.Repository\bin\Debug\netstandard2.1\Splitwise.Doma
 D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.csprojAssemblyReference.cache
 D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.AssemblyInfoInputs.cache
 D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.AssemblyInfo.cs
-D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.csproj.CoreCompileInputs.cache
 D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.csproj.CopyComplete
 D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.dll
 D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.pdb
+D:\CSharp\Splitwise\Splitwise.Repository\obj\Debug\netstandard2.1\Splitwise.Repository.csproj.CoreCompileInputs.cache
