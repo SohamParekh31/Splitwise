@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Splitwise.DomainModel.Models.ApplicationClasses;
+using Splitwise.Repository.GroupRepository;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,43 +13,49 @@ namespace Splitwise.Core.Controllers
     [ApiController]
     public class GroupController : Controller
     {
-        public GroupController()
-        {
+        private readonly IGroupRepository _groupRepository;
 
+        public GroupController(IGroupRepository groupRepository)
+        {
+            _groupRepository = groupRepository;
         }
         [HttpGet]
-        public void GroupList()
+        public IActionResult GroupList()
         {
-            throw new NotImplementedException();
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            return Ok(_groupRepository.GetGroup(userId));
         }
         [HttpGet]
         [Route("{id}")]
-        public void GetGroupBasedOnId(string id)
+        public IActionResult GetGroupBasedOnId(int id)
         {
-            throw new NotImplementedException();
+            return Ok(_groupRepository.GetGroupById(id));
         }
         [HttpPost]
-        public void PostGroup(AddGroup addGroup)
+        public IActionResult PostGroup(AddGroup addGroup)
         {
-            throw new NotImplementedException();
+            return Ok(_groupRepository.AddGroup(addGroup));
         }
         [HttpPut]
         [Route("{id}")]
-        public void EditGroup(string id,AddGroup addGroup)
+        public IActionResult EditGroup(int id,AddGroup addGroup)
         {
-            throw new NotImplementedException();
+            return Ok(_groupRepository.EditGroup(id,addGroup));
         }
         [HttpDelete]
         [Route("{id}")]
-        public void DeleteGroup(string id)
+        public IActionResult DeleteGroup(int id)
         {
-            throw new NotImplementedException();
+            return Ok(_groupRepository.DeleteGroup(id));
         }
         [HttpGet]
         [Route("expense/{id}")]
-        public void GetGroupExpenseList(string id)
+        public IActionResult GetGroupExpenseList(int id)
         {
-            throw new NotImplementedException();
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            return Ok(_groupRepository.GetGroupExpenseList(id,userId));
         }
     }
     

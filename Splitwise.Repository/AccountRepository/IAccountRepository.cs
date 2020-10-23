@@ -1,4 +1,5 @@
-﻿using Splitwise.Core.ApplicationClasses;
+﻿using Microsoft.AspNetCore.Identity;
+using Splitwise.Core.ApplicationClasses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Splitwise.Repository.AccountRepository
     public interface IAccountRepository
     {
         Task<string> Login(Login login);
+        Task<IdentityResult> Register(Register register);
     }
 }

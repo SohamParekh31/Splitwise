@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Splitwise.DomainModel.Models.ApplicationClasses;
+using Splitwise.Repository.FriendRepository;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace Splitwise.Core.Controllers
@@ -12,28 +14,40 @@ namespace Splitwise.Core.Controllers
     [ApiController]
     public class FriendController : Controller
     {
+        private readonly IFriendRepository _friendRepository;
+
+        public FriendController(IFriendRepository friendRepository)
+        {
+            _friendRepository = friendRepository;
+        }
 
         [HttpGet]
-        public void GetFriendList()
+        public IActionResult GetFriendList()
         {
-            throw new NotImplementedException();
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            return Ok(_friendRepository.GetFriendsList(userId));
         }
         [HttpPost]
-        public void PostFriend(AddFriend addFriend)
+        public IActionResult PostFriend(AddFriend addFriend)
         {
-            throw new NotImplementedException();
+            return Ok(_friendRepository.AddFriend(addFriend));
         }
         [HttpDelete]
         [Route("{id}")]
-        public void DeleteFriend(string id)
+        public IActionResult DeleteFriend(string id)
         {
-            throw new NotImplementedException();
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            return Ok(_friendRepository.DeleteFriend(userId));
         }
         [HttpGet]
         [Route("expense/{id}")]
-        public void GetFriendExpenseList(string id)
+        public IActionResult GetFriendExpenseList(string id)
         {
-            throw new NotImplementedException();
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            return Ok(_friendRepository.GetFriendsExpenseList(id,userId));
         }
     }
 }

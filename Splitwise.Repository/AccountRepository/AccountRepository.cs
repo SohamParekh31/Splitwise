@@ -51,5 +51,25 @@ namespace Splitwise.Repository.AccountRepository
             }
             return null;
         }
+
+        public async Task<IdentityResult> Register(Register register)
+        {
+            var user = new ApplicationUser
+            {
+                FirstName = register.FirstName,
+                LastName = register.LastName,
+                Email = register.Email,
+                UserName = register.Email,
+                Currency = register.Currency,
+                PhoneNumber = register.PhoneNumber,
+                Balance = 0
+            };
+            var checkUser = await userManager.FindByEmailAsync(register.Email);
+            if(checkUser == null)
+            {
+                return await userManager.CreateAsync(user, register.Password);
+            }
+            return null;
+        }
     }
 }

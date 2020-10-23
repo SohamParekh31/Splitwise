@@ -36,9 +36,17 @@ namespace Splitwise.Core.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("register")]
-        public void Register(Register register)
+        public async Task<IActionResult> Register(Register register)
         {
-            throw new NotImplementedException();
+            var RegisteReturnModel = await _accountRepository.Register(register);
+            if (RegisteReturnModel != null)
+            {
+                return Ok(RegisteReturnModel);
+            }
+            else
+            {
+                return BadRequest(new { message = "User with Same Email Exist!!" });
+            }
         }
         [AllowAnonymous]
         [HttpPost]
