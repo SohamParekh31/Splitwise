@@ -7,6 +7,6 @@ namespace Splitwise.Repository.ActivityRepository
 {
     public interface IActivityRepository
     {
-        public List<Activity> ActivityList();
+        public List<Activity> ActivityList(string id);
     }
 }

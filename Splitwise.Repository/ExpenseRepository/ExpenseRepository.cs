@@ -1,4 +1,5 @@
-﻿using Splitwise.DomainModel.Models.ApplicationClasses;
+﻿using Splitwise.DomainModel.Models;
+using Splitwise.DomainModel.Models.ApplicationClasses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,7 +24,7 @@ namespace Splitwise.Repository.ExpenseRepository
             throw new NotImplementedException();
         }
 
-        public Task GetExpense(string id)
+        public Task<List<Expense>> GetExpense(string id)
         {
             throw new NotImplementedException();
         }

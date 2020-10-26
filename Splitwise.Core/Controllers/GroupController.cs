@@ -39,9 +39,9 @@ namespace Splitwise.Core.Controllers
         }
         [HttpPut]
         [Route("{id}")]
-        public IActionResult EditGroup(int id,AddGroup addGroup)
+        public IActionResult EditGroup(int id, GroupDetails editGroup)
         {
-            return Ok(_groupRepository.EditGroup(id,addGroup));
+            return Ok(_groupRepository.EditGroup(id, editGroup));
         }
         [HttpDelete]
         [Route("{id}")]

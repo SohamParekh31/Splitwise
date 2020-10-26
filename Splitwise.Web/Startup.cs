@@ -12,6 +12,10 @@ using Microsoft.IdentityModel.Tokens;
 using Splitwise.DomainModel.Data;
 using Splitwise.DomainModel.Models;
 using Splitwise.Repository.AccountRepository;
+using Splitwise.Repository.ActivityRepository;
+using Splitwise.Repository.ExpenseRepository;
+using Splitwise.Repository.FriendRepository;
+using Splitwise.Repository.GroupRepository;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +35,10 @@ namespace Splitwise.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IActivityRepository, ActivityRepository>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IFriendRepository, FriendRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
 
             services.AddDbContextPool<AppDbContext>(options =>
             {

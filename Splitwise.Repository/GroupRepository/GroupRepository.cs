@@ -1,4 +1,5 @@
-﻿using Splitwise.DomainModel.Models;
+﻿using Splitwise.DomainModel.Data;
+using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,17 @@ namespace Splitwise.Repository.GroupRepository
 {
     public class GroupRepository : IGroupRepository
     {
-        public Task<Group> AddGroup(AddGroup addGroup)
+        private readonly AppDbContext _appDbContext;
+
+        public GroupRepository()
+        {
+        }
+
+        public GroupRepository(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
+        public Group AddGroup(AddGroup addGroup)
         {
             throw new NotImplementedException();
         }
@@ -19,17 +30,17 @@ namespace Splitwise.Repository.GroupRepository
             throw new NotImplementedException();
         }
 
-        public Task<Group> EditGroup(int id, AddGroup editGroup)
+        public Group EditGroup(int id, GroupDetails editGroup)
         {
             throw new NotImplementedException();
         }
 
-        public Task GetGroup(string currentUserId)
+        public List<Group> GetGroup(string currentUserId)
         {
             throw new NotImplementedException();
         }
 
-        public Task GetGroupById(int id)
+        public Group GetGroupById(int id)
         {
             throw new NotImplementedException();
         }

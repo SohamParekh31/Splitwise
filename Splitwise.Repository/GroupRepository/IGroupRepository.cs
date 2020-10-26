@@ -9,11 +9,11 @@ namespace Splitwise.Repository.GroupRepository
 {
     public interface IGroupRepository
     {
-        Task<Group> AddGroup(AddGroup addGroup);
-        Task GetGroup(string currentUserId);
-        Task GetGroupById(int id);
+        Group AddGroup(AddGroup addGroup);
+        List<Group> GetGroup(string currentUserId);
+        Group GetGroupById(int id);
         Task DeleteGroup(int id);
-        Task<Group> EditGroup(int id, AddGroup editGroup);
+        Group EditGroup(int id, GroupDetails editGroup);
         Task GetGroupExpenseList(int id, string currentUserId);
 
     }

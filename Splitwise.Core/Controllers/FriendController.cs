@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
 using Splitwise.Repository.FriendRepository;
 using System;
@@ -15,18 +17,21 @@ namespace Splitwise.Core.Controllers
     public class FriendController : Controller
     {
         private readonly IFriendRepository _friendRepository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public FriendController(IFriendRepository friendRepository)
+        public FriendController(IFriendRepository friendRepository,UserManager<ApplicationUser> userManager)
         {
             _friendRepository = friendRepository;
+            this.userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult GetFriendList()
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_friendRepository.GetFriendsList(userId));
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            var user = userManager.FindByEmailAsync(userId).Result;
+            return Ok(_friendRepository.GetFriendsList(user.Id));
         }
         [HttpPost]
         public IActionResult PostFriend(AddFriend addFriend)
@@ -39,7 +44,7 @@ namespace Splitwise.Core.Controllers
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_friendRepository.DeleteFriend(userId));
+            return Ok(_friendRepository.DeleteFriend(id,userId));
         }
         [HttpGet]
         [Route("expense/{id}")]

@@ -9,12 +9,12 @@ namespace Splitwise.Repository.FriendRepository
 {
     public class FriendRepository : IFriendRepository
     {
-        public Task AddFriend(AddFriend addFriend)
+        public Friend AddFriend(AddFriend addFriend)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteFriend(string id)
+        public Task DeleteFriend(string id,string userId)
         {
             throw new NotImplementedException();
         }
@@ -24,7 +24,7 @@ namespace Splitwise.Repository.FriendRepository
             throw new NotImplementedException();
         }
 
-        public Task<List<Friend>> GetFriendsList(string id)
+        public List<Friend> GetFriendsList(string id)
         {
             throw new NotImplementedException();
         }

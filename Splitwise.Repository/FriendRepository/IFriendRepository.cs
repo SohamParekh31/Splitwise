@@ -9,9 +9,9 @@ namespace Splitwise.Repository.FriendRepository
 {
     public interface IFriendRepository
     {
-        Task AddFriend(AddFriend addFriend);
-        Task<List<Friend>> GetFriendsList(string id);
-        Task DeleteFriend(string id);
+        Friend AddFriend(AddFriend addFriend);
+        List<Friend> GetFriendsList(string id);
+        Task DeleteFriend(string id,string userId);
         Task GetFriendsExpenseList(string friendId, string currentUserId);
     }
 }
