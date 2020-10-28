@@ -13,8 +13,8 @@ namespace Splitwise.Repository.ExpenseRepository
         Expense GetExpenseBasedOnId(int id);
         Expense AddExpense(AddExpense addExpense);
         void AddExpenseInfo(AddExpense addExpense, Expense expense);
-        Task EditExpense(int id, AddExpense editExpense);
+        void EditExpense(int id, AddExpense editExpense);
         void DeleteExpense(int id);
-        Task SettlementExpense(SettleUp settleUp);
+        void SettlementExpense(SettleUp settleUp);
     }
 }

@@ -55,8 +55,8 @@ namespace Splitwise.Core.Controllers
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
-            _friendRepository.GetFriendsExpenseList(id, userId);
-            return Ok();
+            var settlement = _friendRepository.GetFriendsExpenseList(id, userId);
+            return Ok(settlement);
         }
     }
 }

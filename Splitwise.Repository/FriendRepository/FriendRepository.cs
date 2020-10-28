@@ -41,9 +41,15 @@ namespace Splitwise.Repository.FriendRepository
             _appDbContext.SaveChanges();
         }
 
-        public void GetFriendsExpenseList(string friendId, string currentUserId)
+        public List<Settlement> GetFriendsExpenseList(string friendId, string currentUserId)
         {
-            throw new NotImplementedException();
+            var user = _userManager.FindByEmailAsync(currentUserId).Result;
+            var friendExpenseYouOwe = _appDbContext.Settlements.Where(x => x.Payer == friendId && x.Payee == user.Id);
+            var friendExpenseOwes = _appDbContext.Settlements.Where(x => x.Payer == user.Id && x.Payee == friendId);
+            if (friendExpenseYouOwe != null)
+                return friendExpenseYouOwe.ToList();
+            else
+                return friendExpenseOwes.ToList();
         }
 
         public List<Friend> GetFriendsList(string id)

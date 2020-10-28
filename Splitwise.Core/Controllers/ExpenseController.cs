@@ -45,7 +45,8 @@ namespace Splitwise.Core.Controllers
         [Route("{id}")]
         public IActionResult EditExpense(int id, AddExpense addExpense)
         {
-            return Ok(_expenseRepository.EditExpense(id,addExpense));
+            _expenseRepository.EditExpense(id, addExpense);
+            return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
@@ -58,7 +59,8 @@ namespace Splitwise.Core.Controllers
         [Route("settlement")]
         public IActionResult Settlment(SettleUp settleUp)
         {
-            return Ok(_expenseRepository.SettlementExpense(settleUp));
+            _expenseRepository.SettlementExpense(settleUp);
+            return Ok();
         }
 
     }
