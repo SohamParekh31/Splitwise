@@ -12,6 +12,6 @@ namespace Splitwise.Repository.FriendRepository
         Friend AddFriend(AddFriend addFriend);
         List<Friend> GetFriendsList(string id);
         void DeleteFriend(string id,string userId);
-        Task GetFriendsExpenseList(string friendId, string currentUserId);
+        void GetFriendsExpenseList(string friendId, string currentUserId);
     }
 }

@@ -15,6 +15,6 @@ namespace Splitwise.Repository.ExpenseRepository
         void AddExpenseInfo(AddExpense addExpense, Expense expense);
         Task EditExpense(int id, AddExpense editExpense);
         void DeleteExpense(int id);
-        Task Settlement(SettleUp settleUp);
+        Task SettlementExpense(SettleUp settleUp);
     }
 }

@@ -15,7 +15,7 @@ namespace Splitwise.Repository.GroupRepository
         Group GetGroupById(int id);
         void DeleteGroup(int id);
         void EditGroup(int id, AddGroup editGroup);
-        Task GetGroupExpenseList(int id, string currentUserId);
+        List<Expense> GetGroupExpenseList(int id, string currentUserId);
 
     }
 }

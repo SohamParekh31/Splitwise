@@ -45,9 +45,12 @@ namespace Splitwise.Repository.ExpenseRepository
             {
                 foreach (var item1 in addExpense.PaidBy)
                 {
+                    var user = _userManager.FindByEmailAsync(item).Result;
+                    var userItem1 = _userManager.FindByEmailAsync(item1.Email).Result;
+
                     if (item == item1.Email)
                     {
-                        var user = _userManager.FindByEmailAsync(item).Result;
+                        
                         ExpenseInfo expenseInfo = new ExpenseInfo();
                         expenseInfo.ExpenseId = expense.ExpenseId;
                         expenseInfo.Paid_Amount = item1.Paid_Amount;
@@ -59,7 +62,6 @@ namespace Splitwise.Repository.ExpenseRepository
                     }
                     else
                     {
-                        var user = _userManager.FindByEmailAsync(item).Result;
                         ExpenseInfo expenseInfo = new ExpenseInfo();
                         expenseInfo.ExpenseId = expense.ExpenseId;
                         expenseInfo.Paid_Amount = 0;
@@ -69,11 +71,22 @@ namespace Splitwise.Repository.ExpenseRepository
                         expenseInfo.Lent_Amount = 0;
                         _appDbContext.ExpenseInfos.Add(expenseInfo);
                     }
+                    Settlement settlement = new Settlement();
+                    settlement.ExpenseId = expense.ExpenseId;
+                    settlement.Payer = user.Id;
+                    settlement.Payee = userItem1.Id;
+                    settlement.Date = addExpense.Date;
+                    if(addExpense.GroupId != null)
+                        settlement.GroupId = addExpense.GroupId;
+                    if (settlement.Payer == settlement.Payee)
+                        settlement.Amount = 0;
+                    else
+                        settlement.Amount = addExpense.Amount / addExpense.Email.Count;
+                    _appDbContext.Settlements.Add(settlement);
                 }
             }
             _appDbContext.SaveChanges();
         }
-
         public void DeleteExpense(int id)
         {
             var expense = _appDbContext.Expenses.FirstOrDefault(x => x.ExpenseId == id);
@@ -105,7 +118,7 @@ namespace Splitwise.Repository.ExpenseRepository
             return expense;
         }
 
-        public Task Settlement(SettleUp settleUp)
+        public Task SettlementExpense(SettleUp settleUp)
         {
             throw new NotImplementedException();
         }

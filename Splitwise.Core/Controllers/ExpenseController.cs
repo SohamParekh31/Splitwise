@@ -58,7 +58,7 @@ namespace Splitwise.Core.Controllers
         [Route("settlement")]
         public IActionResult Settlment(SettleUp settleUp)
         {
-            return Ok(_expenseRepository.Settlement(settleUp));
+            return Ok(_expenseRepository.SettlementExpense(settleUp));
         }
 
     }

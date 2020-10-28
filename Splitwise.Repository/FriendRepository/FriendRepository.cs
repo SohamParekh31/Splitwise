@@ -41,7 +41,7 @@ namespace Splitwise.Repository.FriendRepository
             _appDbContext.SaveChanges();
         }
 
-        public Task GetFriendsExpenseList(string friendId, string currentUserId)
+        public void GetFriendsExpenseList(string friendId, string currentUserId)
         {
             throw new NotImplementedException();
         }

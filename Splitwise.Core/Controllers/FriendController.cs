@@ -45,7 +45,7 @@ namespace Splitwise.Core.Controllers
         public IActionResult DeleteFriend(string id)
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
             _friendRepository.DeleteFriend(id, userId);
             return Ok();
         }
@@ -54,8 +54,9 @@ namespace Splitwise.Core.Controllers
         public IActionResult GetFriendExpenseList(string id)
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_friendRepository.GetFriendsExpenseList(id,userId));
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            _friendRepository.GetFriendsExpenseList(id, userId);
+            return Ok();
         }
     }
 }

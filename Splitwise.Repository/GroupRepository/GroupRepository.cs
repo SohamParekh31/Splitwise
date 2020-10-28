@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Splitwise.DomainModel.Data;
 using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
@@ -145,9 +146,10 @@ namespace Splitwise.Repository.GroupRepository
             return groupList;
         }
 
-        public Task GetGroupExpenseList(int id, string currentUserId)
+        public List<Expense> GetGroupExpenseList(int id, string currentUserId)
         {
-            throw new NotImplementedException();
+            var groupExpense = _appDbContext.Expenses.Where(x => x.GroupId == id).Include(e => e.User).Include(e => e.Group);
+            return groupExpense.ToList();
         }
     }
 }

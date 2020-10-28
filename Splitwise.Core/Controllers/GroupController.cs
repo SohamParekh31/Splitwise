@@ -64,7 +64,8 @@ namespace Splitwise.Core.Controllers
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_groupRepository.GetGroupExpenseList(id,userId));
+            var groupExpense = _groupRepository.GetGroupExpenseList(id, userId);
+            return Ok(groupExpense);
         }
     }
     
