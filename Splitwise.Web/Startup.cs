@@ -13,6 +13,7 @@ using Splitwise.DomainModel.Data;
 using Splitwise.DomainModel.Models;
 using Splitwise.Repository.AccountRepository;
 using Splitwise.Repository.ActivityRepository;
+using Splitwise.Repository.DataRepository;
 using Splitwise.Repository.ExpenseRepository;
 using Splitwise.Repository.FriendRepository;
 using Splitwise.Repository.GroupRepository;
@@ -39,6 +40,7 @@ namespace Splitwise.Web
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<IFriendRepository, FriendRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IDataRepository, DataRepository>();
 
             services.AddDbContextPool<AppDbContext>(options =>
             {

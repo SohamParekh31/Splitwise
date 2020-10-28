@@ -10,10 +10,11 @@ namespace Splitwise.Repository.GroupRepository
     public interface IGroupRepository
     {
         Group AddGroup(AddGroup addGroup);
-        List<Group> GetGroup(string currentUserId);
+        void AddGroupMember(AddGroup addGroup, string currentUserId, Group group);
+        List<GroupReturn> GetGroup(string currentUserId);
         Group GetGroupById(int id);
-        Task DeleteGroup(int id);
-        Group EditGroup(int id, GroupDetails editGroup);
+        void DeleteGroup(int id);
+        void EditGroup(int id, AddGroup editGroup);
         Task GetGroupExpenseList(int id, string currentUserId);
 
     }

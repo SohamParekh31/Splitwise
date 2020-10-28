@@ -9,11 +9,12 @@ namespace Splitwise.Repository.ExpenseRepository
 {
     public interface IExpenseRepository
     {
-        Task<List<Expense>> GetExpense(string id);
-        Task GetExpenseBasedOnId(int id);
-        Task AddExpense(AddExpense addExpense);
+        List<Expense> GetExpense(string id);
+        Expense GetExpenseBasedOnId(int id);
+        Expense AddExpense(AddExpense addExpense);
+        void AddExpenseInfo(AddExpense addExpense, Expense expense);
         Task EditExpense(int id, AddExpense editExpense);
-        Task DeleteExpense(int id);
+        void DeleteExpense(int id);
         Task Settlement(SettleUp settleUp);
     }
 }

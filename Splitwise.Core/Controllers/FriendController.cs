@@ -31,12 +31,14 @@ namespace Splitwise.Core.Controllers
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
             var user = userManager.FindByEmailAsync(userId).Result;
-            return Ok(_friendRepository.GetFriendsList(user.Id));
+            var friendlist = _friendRepository.GetFriendsList(user.Id);
+            return Ok(friendlist);
         }
         [HttpPost]
         public IActionResult PostFriend(AddFriend addFriend)
         {
-            return Ok(_friendRepository.AddFriend(addFriend));
+            _friendRepository.AddFriend(addFriend);
+            return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
@@ -44,7 +46,8 @@ namespace Splitwise.Core.Controllers
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_friendRepository.DeleteFriend(id,userId));
+            _friendRepository.DeleteFriend(id, userId);
+            return Ok();
         }
         [HttpGet]
         [Route("expense/{id}")]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
 using Splitwise.Repository.GroupRepository;
 using System;
@@ -24,30 +25,38 @@ namespace Splitwise.Core.Controllers
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_groupRepository.GetGroup(userId));
+            var group = _groupRepository.GetGroup(userId);
+            return Ok(group);
         }
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetGroupBasedOnId(int id)
         {
-            return Ok(_groupRepository.GetGroupById(id));
+            var group = _groupRepository.GetGroupById(id);
+            return Ok(group);
         }
         [HttpPost]
         public IActionResult PostGroup(AddGroup addGroup)
         {
-            return Ok(_groupRepository.AddGroup(addGroup));
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            Group group = _groupRepository.AddGroup(addGroup);
+            _groupRepository.AddGroupMember(addGroup, userId, group);
+            return Ok();
         }
         [HttpPut]
         [Route("{id}")]
-        public IActionResult EditGroup(int id, GroupDetails editGroup)
+        public IActionResult EditGroup(int id, AddGroup editGroup)
         {
-            return Ok(_groupRepository.EditGroup(id, editGroup));
+            _groupRepository.EditGroup(id, editGroup);
+            return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
         public IActionResult DeleteGroup(int id)
         {
-            return Ok(_groupRepository.DeleteGroup(id));
+            _groupRepository.DeleteGroup(id);
+            return Ok();
         }
         [HttpGet]
         [Route("expense/{id}")]

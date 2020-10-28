@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Splitwise.DomainModel.Models.ApplicationClasses
 {
-    public class UserExpenseMapper
+    public class GroupReturn
     {
+        public int GroupId { get; set; }
         public string Name { get; set; }
-        public string  Email { get; set; }
-        public float Paid_Amount { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -8,26 +8,31 @@ using Splitwise.DomainModel.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Splitwise.Repository.ActivityRepository;
+using Splitwise.Repository.DataRepository;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace Splitwise.Repository.Test.Modules.ActivityTest
 {
     public class ActivityRepositoryTest
     {
-        readonly ActivityRepository.ActivityRepository ap = new ActivityRepository.ActivityRepository();
+        public ActivityRepositoryTest()
+        {
+ 
+        }
         [Fact]
         public void ActivityListTest()
         {
-            //var AppdbContextmock = new Mock<AppDbContext>();
-            var activityRepo = new Mock<IActivityRepository>();
-            var list = new List<Activity>();
-            var userId = "82467ddb-6ff7-46ee-80b0-3b306c63b430";
-            activityRepo.Setup(x => x.ActivityList(userId)).Returns(list);
+            List<Activity> list = new List<Activity>();
+            var mock = new Mock<IDataRepository>();
+            mock.Setup(x => x.Get<Activity>()).Returns(Task.FromResult(list));
 
-            var ExpectedCount = 0;
-            //ActivityRepository.ActivityRepository ap = new ActivityRepository.ActivityRepository();
-            var ActualCount = 0/*ap.ActivityList(userId).ToList().Count()*/;
+            var repo = new ActivityRepository.ActivityRepository(mock.Object);
+            var result = 0/*repo.ActivityList("1").Count()*/;
+            var expected = 0;
 
-            Assert.Equal(ActualCount, ExpectedCount);
+            Assert.Equal(result, expected);
+
 
             //var userId = "82467ddb-6ff7-46ee-80b0-3b306c63b430";
             //Assert.Throws<NotImplementedException>(() => ap.ActivityList(userId));

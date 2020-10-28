@@ -6,6 +6,7 @@ namespace Splitwise.DomainModel.Models.ApplicationClasses
 {
     public class AddGroup
     {
+        public int GroupId { get; set; }
         public string Name { get; set; }
         public string CreatedBy { get; set; }
         public DateTime Date { get; set; }

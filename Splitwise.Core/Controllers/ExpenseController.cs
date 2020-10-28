@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
 using Splitwise.Repository.ExpenseRepository;
 using System;
@@ -22,19 +23,23 @@ namespace Splitwise.Core.Controllers
         public IActionResult Getexpense()
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(_expenseRepository.GetExpense(userId));
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            var expense = _expenseRepository.GetExpense(userId);
+            return Ok(expense);
         }
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetExpenseBasedOnId(int id)
         {
-            return Ok(_expenseRepository.GetExpenseBasedOnId(id));
+            var expense = _expenseRepository.GetExpenseBasedOnId(id);
+            return Ok(expense);
         }
         [HttpPost]
         public IActionResult PostExpense(AddExpense addExpense)
         {
-            return Ok(_expenseRepository.AddExpense(addExpense));
+            Expense expense = _expenseRepository.AddExpense(addExpense);
+            _expenseRepository.AddExpenseInfo(addExpense, expense);
+            return Ok();
         }
         [HttpPut]
         [Route("{id}")]
@@ -46,7 +51,8 @@ namespace Splitwise.Core.Controllers
         [Route("{id}")]
         public IActionResult DeleteExpense(int id)
         {
-            return Ok(_expenseRepository.DeleteExpense(id));
+            _expenseRepository.DeleteExpense(id);
+            return Ok();
         }
         [HttpPost]
         [Route("settlement")]
