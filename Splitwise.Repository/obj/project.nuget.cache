@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "efyGpgMbWvMJ2OaQSOnhvNlditFonMP5Q4DsXWElaZERR88S0vE+sUnXmQng//xaaXnb9TpRKPpGEg1DVenrBg==",
+  "dgSpecHash": "N+VAleUEh8wMKIa1pA30g9HPO5HUsDwVRqhFaTYzezh38b4YaxOLZPpjSPlTmKFN5mdLPbiv/+UIFB0cQovbSA==",
   "success": true,
-  "projectFilePath": "D:\\CSharp\\Splitwise\\Splitwise.Repository\\Splitwise.Repository.csproj",
+  "projectFilePath": "D:\\CSharp\\splitwise\\Splitwise.Repository\\Splitwise.Repository.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SOHAM\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\SOHAM\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +7,7 @@ namespace Splitwise.DomainModel.Models.ApplicationClasses
     public class AddExpense
     {
         public int ExpenseId { get; set; }
-        public List<string> Email { get; set; }
+        public List<Share> Shares { get; set; }
         public string  Description { get; set; }
         public int? GroupId { get; set; }
         public float Amount { get; set; }
