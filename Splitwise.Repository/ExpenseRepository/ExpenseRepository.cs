@@ -34,6 +34,28 @@ namespace Splitwise.Repository.ExpenseRepository
                 IsSettled = addExpense.IsSettled,
                 IsDeleted = addExpense.IsDeleted
             };
+            var group = _appDbContext.Groups.FirstOrDefault(x => x.GroupId == addExpense.GroupId);
+            Activity activity = new Activity()
+            {
+                Description = "You Added Expense "+ addExpense.Description + " in "+ group.Name,
+                UserId = addExpense.CreatedBy,
+                Date = addExpense.Date,
+            };
+            _appDbContext.Activities.Add(activity);
+            foreach (var item in addExpense.Shares)
+            {
+                var user = _userManager.FindByEmailAsync(item.Email).Result;
+                if (user.Id != addExpense.CreatedBy)
+                {
+                    Activity activity1 = new Activity()
+                    {
+                        Description = "You were Added in Expense " + addExpense.Description + " in " + group.Name,
+                        UserId = user.Id,
+                        Date = addExpense.Date,
+                    };
+                    _appDbContext.Activities.Add(activity1);
+                }
+            }
             _appDbContext.Expenses.Add(expense);
             _appDbContext.SaveChanges();
             return expense;
@@ -104,7 +126,6 @@ namespace Splitwise.Repository.ExpenseRepository
                             expenseInfo.Lent_Amount = expenseInfo.Paid_Amount - expenseInfo.Share_Amount;
                             _appDbContext.ExpenseInfos.Add(expenseInfo);
                         }
-
                         else
                         {
                             ExpenseInfo expenseInfo = new ExpenseInfo();

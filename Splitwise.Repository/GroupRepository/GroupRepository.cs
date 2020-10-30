@@ -47,6 +47,13 @@ namespace Splitwise.Repository.GroupRepository
                 GroupId = group.GroupId,
                 UserId = addGroup.CreatedBy,
             };
+            Activity activity = new Activity()
+            {
+                Description = "You Created the Group "+ group.Name,
+                UserId = checkCurrentUser.Id,
+                Date = addGroup.Date,
+            };
+            _appDbContext.Activities.Add(activity);
             _appDbContext.GroupMembers.Add(groupMember1);
             _appDbContext.SaveChanges();
             foreach (var item in addGroup.Users)
@@ -68,18 +75,38 @@ namespace Splitwise.Repository.GroupRepository
                     GroupId = group.GroupId,
                     UserId = user.Id
                 };
+                Activity activity1 = new Activity()
+                {
+                    Description = "You Were Added to the Group " + group.Name,
+                    UserId = user.Id,
+                    Date = addGroup.Date,
+                };
+                _appDbContext.Activities.Add(activity1);
                 _appDbContext.GroupMembers.Add(groupMember);
                 _appDbContext.SaveChanges();
             }
         }
 
-        public void DeleteGroup(int id)
+        public void DeleteGroup(int id,string userId)
         {
+            var user = _userManager.FindByEmailAsync(userId).Result;
             var groupMemberDelete = _appDbContext.GroupMembers.Where(x => x.GroupId == id);
             _appDbContext.GroupMembers.RemoveRange(groupMemberDelete);
-            _appDbContext.SaveChanges();
+            var expense = _appDbContext.Expenses.Where(x => x.GroupId == id);
+            _appDbContext.Expenses.RemoveRange(expense);
+            var getExpenseId = _appDbContext.Expenses.FirstOrDefault(x => x.GroupId == id);
+            var expenseInfo = _appDbContext.ExpenseInfos.Where(x => x.ExpenseId == getExpenseId.ExpenseId);
+            _appDbContext.ExpenseInfos.RemoveRange(expenseInfo);
+            var settlements = _appDbContext.Settlements.Where(x => x.GroupId == id);
+            _appDbContext.Settlements.RemoveRange(settlements);
             var group = _appDbContext.Groups.FirstOrDefault(x => x.GroupId == id);
             _appDbContext.Groups.Remove(group);
+            Activity activity1 = new Activity()
+            {
+                Description = "You Deleted the Group " + group.Name,
+                UserId = user.Id
+            };
+            _appDbContext.Activities.Add(activity1);
             _appDbContext.SaveChanges();
         }
 

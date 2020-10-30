@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zsxVnBaLnQduNJBbFDkcPhURC0WF4wtcl3y/b8DQAlX2+P62kx+XMN/ugfMm90I0L7bUQyARmdfvJ+YlcOkpGg==",
+  "dgSpecHash": "1SItTMsddxTi6Qzkl9XBLwHlKmb3eFVAcVo3+SpAde0K3iFv0Bt8kQfS0AtYXQp0VEcon9XxLBUknH1LAHBTEw==",
   "success": true,
-  "projectFilePath": "D:\\CSharp\\splitwise\\Splitwise.Core\\Splitwise.Core.csproj",
+  "projectFilePath": "D:\\CSharp\\Splitwise\\Splitwise.Core\\Splitwise.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SOHAM\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\SOHAM\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

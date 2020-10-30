@@ -55,7 +55,9 @@ namespace Splitwise.Core.Controllers
         [Route("{id}")]
         public IActionResult DeleteGroup(int id)
         {
-            _groupRepository.DeleteGroup(id);
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            _groupRepository.DeleteGroup(id,userId);
             return Ok();
         }
         [HttpGet]
