@@ -155,6 +155,8 @@ namespace Splitwise.Repository.ExpenseRepository
         }
         public void DeleteExpense(int id)
         {
+            var settlement = _appDbContext.Settlements.Where(x => x.ExpenseId == id);
+            _appDbContext.Settlements.RemoveRange(settlement);
             var expense = _appDbContext.Expenses.FirstOrDefault(x => x.ExpenseId == id);
             var expenseInfo = _appDbContext.ExpenseInfos.Where(x => x.ExpenseId == id);
             _appDbContext.ExpenseInfos.RemoveRange(expenseInfo);

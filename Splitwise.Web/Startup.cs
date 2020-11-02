@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using NSwag.Generation.Processors.Security;
+using NSwag;
 using Splitwise.DomainModel.Data;
 using Splitwise.DomainModel.Models;
 using Splitwise.Repository.AccountRepository;
@@ -18,6 +20,7 @@ using Splitwise.Repository.ExpenseRepository;
 using Splitwise.Repository.FriendRepository;
 using Splitwise.Repository.GroupRepository;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -88,6 +91,21 @@ namespace Splitwise.Web
                     }
                 };
             });
+
+            services.AddOpenApiDocument(document =>
+            {
+                document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
+                });
+
+                document.OperationProcessors.Add(
+                    new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                //      new OperationSecurityScopeProcessor("JWT"));
+            });
             // In production, the Angular files will be served from this directory
             //services.AddSpaStaticFiles(configuration =>
             //{
@@ -124,6 +142,9 @@ namespace Splitwise.Web
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             //app.UseSpa(spa =>
             //{

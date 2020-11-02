@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Splitwise.Core.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/Friends")]
     [ApiController]
     public class FriendController : Controller
@@ -24,7 +24,6 @@ namespace Splitwise.Core.Controllers
             _friendRepository = friendRepository;
             this.userManager = userManager;
         }
-
         [HttpGet]
         public IActionResult GetFriendList()
         {
