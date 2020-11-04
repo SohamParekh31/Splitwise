@@ -21,7 +21,7 @@ namespace Splitwise.Core.Controllers
             _groupRepository = groupRepository;
         }
         [HttpGet]
-        public IActionResult GroupList()
+        public ActionResult<List<GroupReturn>> GroupList()
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
@@ -30,13 +30,13 @@ namespace Splitwise.Core.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetGroupBasedOnId(int id)
+        public ActionResult<Group> GetGroupBasedOnId(int id)
         {
             var group = _groupRepository.GetGroupById(id);
             return Ok(group);
         }
         [HttpPost]
-        public IActionResult PostGroup(AddGroup addGroup)
+        public ActionResult<Group> PostGroup(AddGroup addGroup)
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
@@ -46,14 +46,14 @@ namespace Splitwise.Core.Controllers
         }
         [HttpPut]
         [Route("{id}")]
-        public IActionResult EditGroup(int id, AddGroup editGroup)
+        public ActionResult<Group> EditGroup(int id, AddGroup editGroup)
         {
             _groupRepository.EditGroup(id, editGroup);
             return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteGroup(int id)
+        public ActionResult<Group> DeleteGroup(int id)
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
@@ -62,7 +62,7 @@ namespace Splitwise.Core.Controllers
         }
         [HttpGet]
         [Route("expense/{id}")]
-        public IActionResult GetGroupExpenseList(int id)
+        public ActionResult<List<Expense>> GetGroupExpenseList(int id)
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;

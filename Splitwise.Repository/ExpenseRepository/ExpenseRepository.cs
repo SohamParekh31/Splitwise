@@ -202,7 +202,7 @@ namespace Splitwise.Repository.ExpenseRepository
             return expense;
         }
 
-        public void SettlementExpense(SettleUp settleUp)
+        public PaymentBook SettlementExpense(SettleUp settleUp)
         {
             Settlement settlement;
             if (settleUp.GroupId != null)
@@ -220,6 +220,7 @@ namespace Splitwise.Repository.ExpenseRepository
             settlement.Amount -= settleUp.Amount;
             _appDbContext.Settlements.Update(settlement);
             _appDbContext.SaveChanges();
+            return paymentBook;
         }
     }
 }

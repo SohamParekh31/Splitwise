@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5aGec9yUOKXANUBQlb/B56HAaU8P4NWftx5dxQlOZSpPbFKbjoSZtgZm7wayeuGLxg72F/li0B2ojcqF4eAmhw==",
+  "dgSpecHash": "4ai8Ulr7vRNFT8zAkH+YMpVZ3tGOf8GxEYkVFL36hj+VjRaF28U1AX3mk4TY7qfNStr/fQtLaNEfjssS+n2FWw==",
   "success": true,
-  "projectFilePath": "D:\\CSharp\\Splitwise\\Splitwise.Repository.Test\\Splitwise.Repository.Test.csproj",
+  "projectFilePath": "D:\\CSharp\\splitwise\\Splitwise.Repository.Test\\Splitwise.Repository.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SOHAM\\.nuget\\packages\\castle.core\\4.4.0\\castle.core.4.4.0.nupkg.sha512",
     "C:\\Users\\SOHAM\\.nuget\\packages\\coverlet.collector\\1.2.0\\coverlet.collector.1.2.0.nupkg.sha512",

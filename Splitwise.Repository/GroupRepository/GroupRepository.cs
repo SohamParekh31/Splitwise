@@ -31,7 +31,7 @@ namespace Splitwise.Repository.GroupRepository
                 CreatedBy = addGroup.CreatedBy,
                 Date = addGroup.Date,
                 SimplyfyDebits = addGroup.SimplyfyDebits,
-                IsDeleted = addGroup.IsDeleted
+                IsDeleted = false
             };
             _appDbContext.Groups.Add(group);
             _appDbContext.SaveChanges();

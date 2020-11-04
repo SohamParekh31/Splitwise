@@ -26,7 +26,7 @@ namespace Splitwise.Core.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult ActivityList()
+        public ActionResult<List<Activity>> ActivityList()
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;

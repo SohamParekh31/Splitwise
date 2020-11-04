@@ -7805,11 +7805,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\CSharp\\Splitwise\\Splitwise.Repository\\Splitwise.Repository.csproj",
+      "projectUniqueName": "D:\\CSharp\\splitwise\\Splitwise.Repository\\Splitwise.Repository.csproj",
       "projectName": "Splitwise.Repository",
-      "projectPath": "D:\\CSharp\\Splitwise\\Splitwise.Repository\\Splitwise.Repository.csproj",
+      "projectPath": "D:\\CSharp\\splitwise\\Splitwise.Repository\\Splitwise.Repository.csproj",
       "packagesPath": "C:\\Users\\SOHAM\\.nuget\\packages\\",
-      "outputPath": "D:\\CSharp\\Splitwise\\Splitwise.Repository\\obj\\",
+      "outputPath": "D:\\CSharp\\splitwise\\Splitwise.Repository\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\SOHAM\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7825,8 +7825,8 @@
       "frameworks": {
         "netstandard2.1": {
           "projectReferences": {
-            "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj": {
-              "projectPath": "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj"
+            "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj": {
+              "projectPath": "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj"
             }
           }
         }

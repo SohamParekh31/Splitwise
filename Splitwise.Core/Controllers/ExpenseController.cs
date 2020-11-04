@@ -20,7 +20,7 @@ namespace Splitwise.Core.Controllers
             _expenseRepository = expenseRepository;
         }
         [HttpGet]
-        public IActionResult Getexpense()
+        public ActionResult<List<Expense>> Getexpense()
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
@@ -29,13 +29,13 @@ namespace Splitwise.Core.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetExpenseBasedOnId(int id)
+        public ActionResult<Expense> GetExpenseBasedOnId(int id)
         {
             var expense = _expenseRepository.GetExpenseBasedOnId(id);
             return Ok(expense);
         }
         [HttpPost]
-        public IActionResult PostExpense(AddExpense addExpense)
+        public ActionResult<Expense> PostExpense(AddExpense addExpense)
         {
             Expense expense = _expenseRepository.AddExpense(addExpense);
             _expenseRepository.AddExpenseInfo(addExpense, expense);
@@ -43,21 +43,21 @@ namespace Splitwise.Core.Controllers
         }
         [HttpPut]
         [Route("{id}")]
-        public IActionResult EditExpense(int id, AddExpense addExpense)
+        public ActionResult<Expense> EditExpense(int id, AddExpense addExpense)
         {
             _expenseRepository.EditExpense(id, addExpense);
             return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteExpense(int id)
+        public ActionResult DeleteExpense(int id)
         {
             _expenseRepository.DeleteExpense(id);
             return Ok();
         }
         [HttpPost]
         [Route("settlement")]
-        public IActionResult Settlment(SettleUp settleUp)
+        public ActionResult<PaymentBook> Settlment(SettleUp settleUp)
         {
             _expenseRepository.SettlementExpense(settleUp);
             return Ok();

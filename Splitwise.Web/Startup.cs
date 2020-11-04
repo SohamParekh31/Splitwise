@@ -28,6 +28,7 @@ namespace Splitwise.Web
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -91,7 +92,14 @@ namespace Splitwise.Web
                     }
                 };
             });
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                                  });
+            });
             services.AddOpenApiDocument(document =>
             {
                 document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
@@ -104,7 +112,6 @@ namespace Splitwise.Web
 
                 document.OperationProcessors.Add(
                     new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-                //      new OperationSecurityScopeProcessor("JWT"));
             });
             // In production, the Angular files will be served from this directory
             //services.AddSpaStaticFiles(configuration =>
@@ -127,6 +134,7 @@ namespace Splitwise.Web
                 app.UseHsts();
             }
             app.UseAuthentication();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
             //app.UseStaticFiles();
             //if (!env.IsDevelopment())

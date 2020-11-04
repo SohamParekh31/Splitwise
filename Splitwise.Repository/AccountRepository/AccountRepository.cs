@@ -35,6 +35,7 @@ namespace Splitwise.Repository.AccountRepository
                     var authClaims = new List<Claim>
                         {
                             new Claim("name", loggedInUser.UserName),
+                            new Claim("ID",loggedInUser.Id),
                             new Claim(ClaimTypes.Name, loggedInUser.UserName),
                             new Claim(ClaimTypes.Email, loggedInUser.Email),
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
