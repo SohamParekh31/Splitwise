@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj": {}
+    "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj": {}
   },
   "projects": {
-    "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj": {
+    "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj",
+        "projectUniqueName": "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj",
         "projectName": "Splitwise.DomainModel",
-        "projectPath": "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj",
+        "projectPath": "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\Splitwise.DomainModel.csproj",
         "packagesPath": "C:\\Users\\SOHAM\\.nuget\\packages\\",
-        "outputPath": "D:\\CSharp\\splitwise\\Splitwise.DomainModel\\obj\\",
+        "outputPath": "D:\\CSharp\\Splitwise\\Splitwise.DomainModel\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\SOHAM\\AppData\\Roaming\\NuGet\\NuGet.Config",

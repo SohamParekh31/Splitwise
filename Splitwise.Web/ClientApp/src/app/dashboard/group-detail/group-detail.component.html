@@ -1,1 +1,10 @@
-<p>group-detail works!</p>
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Group Name: {{groupDetails.name}}</h4>
+      <p class="card-text" style="margin-top: 3rem;">Created By: {{groupDetails.user['firstName']}} {{groupDetails.user['lastName']}}</p>
+      <p class="card-text">Date: {{groupDetails.date | date:"MM/dd/yy" }}</p>
+      <p class="card-text" *ngFor="let groupMembers of groupDetails.users">Group Members: {{groupMembers.name}}</p>
+    </div>
+  </div>
+</div>

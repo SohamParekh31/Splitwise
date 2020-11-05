@@ -68,7 +68,12 @@ namespace Splitwise.Repository.ExpenseRepository
             {
                 foreach (var item in addExpense.Shares)
                 {
-                    exp += (item.Share_Percentage / addExpense.Amount) * 100;
+                    foreach (var item1 in addExpense.PaidBy)
+                    {
+                        if(item.Email != item1.Email)
+                            exp += (item.Share_Percentage * addExpense.Amount) / 100;
+                    }
+                    
                 }
             }
             
@@ -96,9 +101,9 @@ namespace Splitwise.Repository.ExpenseRepository
                             ExpenseInfo expenseInfo = new ExpenseInfo();
                             expenseInfo.ExpenseId = expense.ExpenseId;
                             expenseInfo.Paid_Amount = 0;
-                            expenseInfo.Borrow_Amount = (item.Share_Percentage / addExpense.Amount) * 100;
+                            expenseInfo.Borrow_Amount = (item.Share_Percentage * addExpense.Amount) / 100;
                             expenseInfo.UserId = user.Id;
-                            expenseInfo.Share_Amount = (item.Share_Percentage / addExpense.Amount) * 100;
+                            expenseInfo.Share_Amount = (item.Share_Percentage * addExpense.Amount) / 100;
                             expenseInfo.Lent_Amount = 0;
                             _appDbContext.ExpenseInfos.Add(expenseInfo);
                         }
@@ -107,7 +112,7 @@ namespace Splitwise.Repository.ExpenseRepository
                         settlement.Payer = user.Id;
                         settlement.Payee = userItem1.Id;
                         settlement.Date = addExpense.Date;
-                        settlement.Amount = (item.Share_Percentage / addExpense.Amount) * 100;
+                        settlement.Amount = (item.Share_Percentage * addExpense.Amount) / 100;
                         if (addExpense.GroupId != null)
                             settlement.GroupId = addExpense.GroupId;
                         if (settlement.Payer != settlement.Payee)

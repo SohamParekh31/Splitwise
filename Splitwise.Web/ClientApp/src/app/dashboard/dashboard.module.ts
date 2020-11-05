@@ -13,7 +13,7 @@ import { SettleUpComponent } from './settle-up/settle-up.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from '../auth/auth.guard';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -33,6 +33,7 @@ import { AuthGuard } from '../auth/auth.guard';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
     RouterModule.forChild([
       { path: '', redirectTo: 'splitwise', pathMatch: 'full',canActivate:[AuthGuard] },
       { path: 'splitwise', component:  MainPageComponent,canActivate:[AuthGuard]},

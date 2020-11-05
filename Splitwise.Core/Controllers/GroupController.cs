@@ -30,7 +30,7 @@ namespace Splitwise.Core.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<Group> GetGroupBasedOnId(int id)
+        public ActionResult<AddGroup> GetGroupBasedOnId(int id)
         {
             var group = _groupRepository.GetGroupById(id);
             return Ok(group);

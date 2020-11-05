@@ -12,7 +12,7 @@ namespace Splitwise.Repository.GroupRepository
         Group AddGroup(AddGroup addGroup);
         void AddGroupMember(AddGroup addGroup, string currentUserId, Group group);
         List<GroupReturn> GetGroup(string currentUserId);
-        Group GetGroupById(int id);
+        AddGroup GetGroupById(int id);
         void DeleteGroup(int id,string userId);
         void EditGroup(int id, AddGroup editGroup);
         List<Expense> GetGroupExpenseList(int id, string currentUserId);

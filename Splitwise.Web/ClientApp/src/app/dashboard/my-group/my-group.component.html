@@ -1,18 +1,12 @@
 <div class="container">
-  <div class="card">
+  <a [routerLink]="['/dashboard/addGroup']" class="btn btn-outline-dark mb-2">Add Group</a>
+  <div class="card mb-1" *ngFor="let groupData of group | paginate: { itemsPerPage: 3, currentPage: p }">
     <div class="card-body">
-      <h4 class="card-title">Group Name</h4>
-      <p class="card-text">Some example text. Some example text.</p>
-      <a href="#" class="btn btn-outline-primary mr-2"><i class="far fa-edit"></i></a>
-      <a href="#" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+      <h4 class="card-title">{{groupData.name}}</h4>
+      <p class="card-text"></p>
+      <a [routerLink]="['/dashboard/myGroups',groupData.groupId]" class="btn btn-outline-primary mr-2"><i class="far fa-edit"></i></a>
+      <a class="btn btn-outline-danger" (click)="deleteGroup(groupData)"><i class="far fa-trash-alt"></i></a>
     </div>
   </div>
-  <div class="card mt-2">
-    <div class="card-body">
-      <h4 class="card-title">Group Name</h4>
-      <p class="card-text">Some example text. Some example text.</p>
-      <a href="#" class="btn btn-outline-primary mr-2"><i class="far fa-edit"></i></a>
-      <a href="#" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
-    </div>
-  </div>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>

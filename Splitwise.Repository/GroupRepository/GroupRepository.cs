@@ -17,7 +17,7 @@ namespace Splitwise.Repository.GroupRepository
         private readonly AppDbContext _appDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public GroupRepository(AppDbContext appDbContext,UserManager<ApplicationUser> userManager)
+        public GroupRepository(AppDbContext appDbContext, UserManager<ApplicationUser> userManager)
         {
             _appDbContext = appDbContext;
             _userManager = userManager;
@@ -25,8 +25,8 @@ namespace Splitwise.Repository.GroupRepository
 
         public Group AddGroup(AddGroup addGroup)
         {
-            Group group = new Group() 
-            { 
+            Group group = new Group()
+            {
                 Name = addGroup.Name,
                 CreatedBy = addGroup.CreatedBy,
                 Date = addGroup.Date,
@@ -35,7 +35,7 @@ namespace Splitwise.Repository.GroupRepository
             };
             _appDbContext.Groups.Add(group);
             _appDbContext.SaveChanges();
-            
+
             return group;
         }
 
@@ -49,7 +49,7 @@ namespace Splitwise.Repository.GroupRepository
             };
             Activity activity = new Activity()
             {
-                Description = "You Created the Group "+ group.Name,
+                Description = "You Created the Group " + group.Name,
                 UserId = checkCurrentUser.Id,
                 Date = addGroup.Date,
             };
@@ -87,16 +87,20 @@ namespace Splitwise.Repository.GroupRepository
             }
         }
 
-        public void DeleteGroup(int id,string userId)
+        public void DeleteGroup(int id, string userId)
         {
             var user = _userManager.FindByEmailAsync(userId).Result;
             var groupMemberDelete = _appDbContext.GroupMembers.Where(x => x.GroupId == id);
             _appDbContext.GroupMembers.RemoveRange(groupMemberDelete);
-            var expense = _appDbContext.Expenses.Where(x => x.GroupId == id);
-            _appDbContext.Expenses.RemoveRange(expense);
+            var expense = _appDbContext.Expenses.Where(x => x.GroupId == id).ToList();
+            if(expense.Count != 0)
+                _appDbContext.Expenses.RemoveRange(expense);
             var getExpenseId = _appDbContext.Expenses.FirstOrDefault(x => x.GroupId == id);
-            var expenseInfo = _appDbContext.ExpenseInfos.Where(x => x.ExpenseId == getExpenseId.ExpenseId);
-            _appDbContext.ExpenseInfos.RemoveRange(expenseInfo);
+            if(getExpenseId != null)
+            {
+                var expenseInfo = _appDbContext.ExpenseInfos.Where(x => x.ExpenseId == getExpenseId.ExpenseId).ToList();
+                _appDbContext.ExpenseInfos.RemoveRange(expenseInfo);
+            }
             var settlements = _appDbContext.Settlements.Where(x => x.GroupId == id);
             _appDbContext.Settlements.RemoveRange(settlements);
             var group = _appDbContext.Groups.FirstOrDefault(x => x.GroupId == id);
@@ -104,7 +108,8 @@ namespace Splitwise.Repository.GroupRepository
             Activity activity1 = new Activity()
             {
                 Description = "You Deleted the Group " + group.Name,
-                UserId = user.Id
+                UserId = user.Id,
+                Date = DateTime.Today
             };
             _appDbContext.Activities.Add(activity1);
             _appDbContext.SaveChanges();
@@ -165,12 +170,35 @@ namespace Splitwise.Repository.GroupRepository
             return groupReturns;
         }
 
-        public Group GetGroupById(int id)
+        public AddGroup GetGroupById(int id)
         {
             var groupList = _appDbContext.Groups.FirstOrDefault(x => x.GroupId == id);
-            var user = _userManager.FindByIdAsync(groupList.CreatedBy).Result;
-            groupList.User = user;
-            return groupList;
+            var groupMemberList = _appDbContext.GroupMembers.Where(x => x.GroupId == id).ToList();
+            AddGroup addGroup = new AddGroup();
+            addGroup.GroupId = groupList.GroupId;
+            addGroup.Name = groupList.Name;
+            addGroup.CreatedBy = groupList.CreatedBy;
+            var user = _userManager.FindByIdAsync(addGroup.CreatedBy).Result;
+            addGroup.User = user;
+            addGroup.Date = groupList.Date;
+            addGroup.SimplyfyDebits = groupList.SimplyfyDebits;
+            addGroup.IsDeleted = groupList.IsDeleted;
+            addGroup.Users = new List<GroupUserMapping>();
+            foreach (var item in groupMemberList)
+            {
+                if(item.UserId != addGroup.CreatedBy)
+                {
+                    var applicationUser = _userManager.FindByIdAsync(item.UserId).Result;
+                    GroupUserMapping groupUserMapping = new GroupUserMapping
+                    {
+                        Name = applicationUser.FirstName,
+                        Email = applicationUser.Email
+                    };
+                    addGroup.Users.Add(groupUserMapping);
+                }
+            }
+            
+            return addGroup;
         }
 
         public List<Expense> GetGroupExpenseList(int id, string currentUserId)

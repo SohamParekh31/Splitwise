@@ -8,6 +8,7 @@ import { Splitwise } from '../../api/SplitWiseApi'
 })
 export class MyExpenseComponent implements OnInit {
 
+  p: number = 1;
   expense:Splitwise.Expense[] = [];
   constructor(private expenseService:Splitwise.ExpenseClient) { }
 
@@ -15,9 +16,17 @@ export class MyExpenseComponent implements OnInit {
     this.expenseService.getexpense().subscribe(
       (data) => {
         this.expense = data;
-        console.log(this.expense);
       }
     );
+  }
+  deleteExpense(expense:Splitwise.Expense){
+    if(confirm(`Are you sure,You want to delete Expense ${expense.description} ?`)){
+      this.expenseService.deleteExpense(expense.expenseId).subscribe(
+        () => {
+          console.log("Expense Deleted!");
+        }
+      );
+    }
   }
 
 }

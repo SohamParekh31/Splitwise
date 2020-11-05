@@ -9,6 +9,7 @@ import { Splitwise } from '../../api/SplitWiseApi'
 })
 export class MyGroupComponent implements OnInit {
 
+  p: number = 1;
   group:Splitwise.GroupReturn[] = [];
   constructor(private groupService:Splitwise.GroupClient) { }
 
@@ -16,7 +17,14 @@ export class MyGroupComponent implements OnInit {
     this.groupService.groupList().subscribe(
       (data) => {
         this.group = data;
-        console.log(this.group);
+      }
+    );
+  }
+  deleteGroup(groupData:Splitwise.GroupReturn){
+    if(confirm(`Are you sure you want to delete ${groupData.name}?`))
+    this.groupService.deleteGroup(groupData.groupId).subscribe(
+      () => {
+        console.log("Group Deleted!");
       }
     );
   }

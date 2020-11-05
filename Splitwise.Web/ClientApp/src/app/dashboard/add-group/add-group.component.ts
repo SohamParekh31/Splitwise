@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Splitwise } from 'src/app/api/SplitWiseApi';
 
 
 
@@ -10,9 +12,10 @@ import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 })
 export class AddGroupComponent implements OnInit {
 
-
+  group:Splitwise.AddGroup;
   groupForm: FormGroup;
-  constructor(private fb: FormBuilder) { }
+  id:string = localStorage.getItem('id');
+  constructor(private fb: FormBuilder,private groupService:Splitwise.GroupClient,private route:Router) { }
 
   get users(){
     return <FormArray>this.groupForm.get('users');
@@ -21,6 +24,7 @@ export class AddGroupComponent implements OnInit {
     this.groupForm = this.fb.group({
       name:'',
       date:'',
+      createdBy:this.id,
       users:this.fb.array([this.Addmember()]),
       simplyfyDebits:false,
       isDeleted:false,
@@ -40,7 +44,14 @@ export class AddGroupComponent implements OnInit {
     })
   }
   onSubmit(){
-    console.log(this.groupForm.value);
+    this.group = this.groupForm.value;
+    console.log(this.group);
+    this.groupService.postGroup(this.group).subscribe(
+      () => {
+        console.log("Group Added Successfully!");
+        this.route.navigate(['/dashboard/splitwise']);
+      }
+    );
   }
 }
 

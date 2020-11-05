@@ -933,7 +933,8 @@ export class GroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -973,56 +974,56 @@ export class GroupClient {
         return _observableOf<Group>(<any>null);
     }
 
-    getGroupBasedOnId(id: number): Observable<Group> {
-        let url_ = this.baseUrl + "/api/Groups/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
+    getGroupBasedOnId(id: number): Observable<AddGroup> {
+      let url_ = this.baseUrl + "/api/Groups/{id}";
+      if (id === undefined || id === null)
+          throw new Error("The parameter 'id' must be defined.");
+      url_ = url_.replace("{id}", encodeURIComponent("" + id));
+      url_ = url_.replace(/[?&]$/, "");
 
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json"
+          })
+      };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetGroupBasedOnId(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetGroupBasedOnId(<any>response_);
-                } catch (e) {
-                    return <Observable<Group>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Group>><any>_observableThrow(response_);
-        }));
-    }
+      return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processGetGroupBasedOnId(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processGetGroupBasedOnId(<any>response_);
+              } catch (e) {
+                  return <Observable<AddGroup>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<AddGroup>><any>_observableThrow(response_);
+      }));
+  }
 
-    protected processGetGroupBasedOnId(response: HttpResponseBase): Observable<Group> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+  protected processGetGroupBasedOnId(response: HttpResponseBase): Observable<AddGroup> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Group.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<Group>(<any>null);
-    }
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = AddGroup.fromJS(resultData200);
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<AddGroup>(<any>null);
+  }
 
     editGroup(id: number, editGroup: AddGroup): Observable<Group> {
         let url_ = this.baseUrl + "/api/Groups/{id}";
@@ -1090,7 +1091,8 @@ export class GroupClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -2211,71 +2213,75 @@ export interface IGroupReturn {
 }
 
 export class AddGroup implements IAddGroup {
-    groupId?: number;
-    name?: string | undefined;
-    createdBy?: string | undefined;
-    date?: Date;
-    simplyfyDebits?: boolean;
-    isDeleted?: boolean;
-    users?: GroupUserMapping[] | undefined;
+  groupId?: number;
+  name?: string;
+  createdBy?: string | undefined;
+  user?: ApplicationUser | undefined;
+  date?: Date;
+  simplyfyDebits?: boolean;
+  isDeleted?: boolean;
+  users?: GroupUserMapping[] | undefined;
 
-    constructor(data?: IAddGroup) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
+  constructor(data?: IAddGroup) {
+      if (data) {
+          for (var property in data) {
+              if (data.hasOwnProperty(property))
+                  (<any>this)[property] = (<any>data)[property];
+          }
+      }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.groupId = _data["groupId"];
-            this.name = _data["name"];
-            this.createdBy = _data["createdBy"];
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
-            this.simplyfyDebits = _data["simplyfyDebits"];
-            this.isDeleted = _data["isDeleted"];
-            if (Array.isArray(_data["users"])) {
-                this.users = [] as any;
-                for (let item of _data["users"])
-                    this.users!.push(GroupUserMapping.fromJS(item));
-            }
-        }
-    }
+  init(_data?: any) {
+      if (_data) {
+          this.groupId = _data["groupId"];
+          this.name = _data["name"];
+          this.createdBy = _data["createdBy"];
+          this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+          this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+          this.simplyfyDebits = _data["simplyfyDebits"];
+          this.isDeleted = _data["isDeleted"];
+          if (Array.isArray(_data["users"])) {
+              this.users = [] as any;
+              for (let item of _data["users"])
+                  this.users!.push(GroupUserMapping.fromJS(item));
+          }
+      }
+  }
 
-    static fromJS(data: any): AddGroup {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddGroup();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): AddGroup {
+      data = typeof data === 'object' ? data : {};
+      let result = new AddGroup();
+      result.init(data);
+      return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["groupId"] = this.groupId;
-        data["name"] = this.name;
-        data["createdBy"] = this.createdBy;
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
-        data["simplyfyDebits"] = this.simplyfyDebits;
-        data["isDeleted"] = this.isDeleted;
-        if (Array.isArray(this.users)) {
-            data["users"] = [];
-            for (let item of this.users)
-                data["users"].push(item.toJSON());
-        }
-        return data;
-    }
+  toJSON(data?: any) {
+      data = typeof data === 'object' ? data : {};
+      data["groupId"] = this.groupId;
+      data["name"] = this.name;
+      data["createdBy"] = this.createdBy;
+      data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+      data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+      data["simplyfyDebits"] = this.simplyfyDebits;
+      data["isDeleted"] = this.isDeleted;
+      if (Array.isArray(this.users)) {
+          data["users"] = [];
+          for (let item of this.users)
+              data["users"].push(item.toJSON());
+      }
+      return data;
+  }
 }
 
 export interface IAddGroup {
-    groupId?: number;
-    name?: string | undefined;
-    createdBy?: string | undefined;
-    date?: Date;
-    simplyfyDebits?: boolean;
-    isDeleted?: boolean;
-    users?: GroupUserMapping[] | undefined;
+  groupId?: number;
+  name?: string;
+  createdBy?: string | undefined;
+  user?: ApplicationUser | undefined;
+  date?: Date;
+  simplyfyDebits?: boolean;
+  isDeleted?: boolean;
+  users?: GroupUserMapping[] | undefined;
 }
 
 export class GroupUserMapping implements IGroupUserMapping {

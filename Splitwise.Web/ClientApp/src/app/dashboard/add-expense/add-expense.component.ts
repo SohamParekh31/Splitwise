@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Splitwise } from 'src/app/api/SplitWiseApi';
 
 
 @Component({
@@ -10,8 +11,10 @@ import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 export class AddExpenseComponent implements OnInit {
 
   expenseForm: FormGroup;
-
-  constructor(private fb: FormBuilder) { }
+  id:string = localStorage.getItem('id');
+  group:Splitwise.GroupReturn[] = [];
+  expense:Splitwise.AddExpense;
+  constructor(private fb: FormBuilder,private groupService:Splitwise.GroupClient,private expenseServie:Splitwise.ExpenseClient) { }
 
   get paidBy(){
     return <FormArray>this.expenseForm.get('paidBy');
@@ -25,13 +28,18 @@ export class AddExpenseComponent implements OnInit {
       description:'',
       date:'',
       groupId:null,
-      createdBy:'',
+      createdBy:this.id,
       splitType:'',
       amount:null,
       paidBy:this.fb.array([this.Addmember()]),
       isSettled:false,
       isDeleted:false,
     });
+    this.groupService.groupList().subscribe(
+      (data) => {
+        this.group = data;
+      }
+    );
   }
   getSplitTypeValue(){
     var value = this.expenseForm.value;
@@ -53,19 +61,25 @@ export class AddExpenseComponent implements OnInit {
     return this.fb.group({
       name:'',
       email:'',
-      paid_Amount:null
+      paid_Amount:0
     })
   }
   AddShares(): FormGroup{
     return this.fb.group({
       name:'',
       email:'',
-      share_Percentage:null,
-      share_Amount:null
+      share_Percentage:0,
+      share_Amount:0
     })
   }
   onSubmit(){
-    console.log(this.expenseForm.value);
+    this.expense = this.expenseForm.value;
+    console.log(this.expense);
+    this.expenseServie.postExpense(this.expense).subscribe(
+      () => {
+        console.log("Expense Added!");
+      }
+    );
   }
 
 }
