@@ -47,13 +47,16 @@
     <div class="form-group row">
       <label for="splittype" class="col-sm-2 col-form-label">Split Type</label>
       <div class="col-sm-10">
-        <input
+        <select
           type="text"
           formControlName="splitType"
           class="form-control"
           id="splittype"
           placeholder="Split Type"
-        />
+        >
+        <option value="Equally">Equally</option>
+        <option value="Percentage">Percentage</option>
+      </select>
       </div>
     </div>
 
@@ -111,7 +114,7 @@
     </div>
 
     <div class="form-group">
-      <label class="col-form-label">Expense Members</label>
+      <label class="col-form-label">Expense Members (Also Include User who Paid!)</label>
       <div
         formArrayName="shares"
         *ngFor="let g of shares.controls; let i = index"

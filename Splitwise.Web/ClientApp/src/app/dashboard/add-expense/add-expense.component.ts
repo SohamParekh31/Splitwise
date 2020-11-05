@@ -41,10 +41,6 @@ export class AddExpenseComponent implements OnInit {
       }
     );
   }
-  getSplitTypeValue(){
-    var value = this.expenseForm.value;
-    return value.splitType;
-  }
   addShareMember(){
     this.shares.push(this.AddShares());
   }

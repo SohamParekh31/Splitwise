@@ -1,10 +1,22 @@
 <div class="container">
-  <div class="card">
+  <div class="card mb-1">
     <div class="card-body">
-      <h4 class="card-title">Group Name: {{groupDetails.name}}</h4>
-      <p class="card-text" style="margin-top: 3rem;">Created By: {{groupDetails.user['firstName']}} {{groupDetails.user['lastName']}}</p>
-      <p class="card-text">Date: {{groupDetails.date | date:"MM/dd/yy" }}</p>
-      <p class="card-text" *ngFor="let groupMembers of groupDetails.users">Group Members: {{groupMembers.name}}</p>
+      <h4 class="card-title">Group Name: {{groupDetails?.name}}</h4>
+      <p class="card-text" style="margin-top: 3rem;">Created By: {{groupDetails?.user['firstName']}} {{groupDetails?.user['lastName']}}</p>
+      <p class="card-text">Date: {{groupDetails?.date | date:"MM/dd/yy" }}</p>
+      <p class="card-text" *ngFor="let groupMembers of groupDetails?.users">Group Members: {{groupMembers.name}}</p>
     </div>
   </div>
+  <h3>Group Expenses</h3>
+  <div class="card mb-1" *ngFor="let expense of groupExpenseList | paginate: { itemsPerPage: 1, currentPage: p }">
+    <div class="card-body">
+      <h4 class="card-title">{{expense.description}}</h4>
+      <p class="card-text">Amount: {{expense.amount}}</p>
+      <p class="card-text">Split Type: {{expense.splitType}}</p>
+      <p class="card-text">Created By: {{expense.user.firstName}} {{expense.user.lastName}}</p>
+      <a href="#" class="btn btn-outline-primary mr-2"><i class="far fa-edit"></i></a>
+      <a (click)="deleteExpense(expense)" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+    </div>
+  </div>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
