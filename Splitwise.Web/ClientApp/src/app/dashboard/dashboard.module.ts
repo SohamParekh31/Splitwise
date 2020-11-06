@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from '../auth/auth.guard';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { GroupEditComponent } from './group-edit/group-edit.component';
+import { FriendDetailComponent } from './friend-detail/friend-detail.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { GroupEditComponent } from './group-edit/group-edit.component';
     AddFriendComponent,
     SettleUpComponent,
     GroupDetailComponent,
-    GroupEditComponent
+    GroupEditComponent,
+    FriendDetailComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,8 @@ import { GroupEditComponent } from './group-edit/group-edit.component';
       { path: 'settleUp', component: SettleUpComponent,canActivate:[AuthGuard]},
       { path: 'myGroups/:id', component: GroupDetailComponent,canActivate:[AuthGuard]},
       { path: 'myGroups/Edit/:id', component: GroupEditComponent,canActivate:[AuthGuard]},
+      { path: 'friend/:id', component: FriendDetailComponent,canActivate:[AuthGuard]},
+
     ]),
   ]
 })

@@ -30,8 +30,7 @@ namespace Splitwise.Core.Controllers
         {
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
-            var user = _userManager.FindByEmailAsync(userId).Result;
-            var activity = _activityRepository.ActivityList(user.Id);
+            var activity = _activityRepository.ActivityList(userId);
             return Ok(activity);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Splitwise.Core.ApplicationClasses;
+using Splitwise.DomainModel.Models.ApplicationClasses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,7 @@ namespace Splitwise.Repository.AccountRepository
     {
         Task<string> Login(Login login);
         Task<IdentityResult> Register(Register register);
+
+        UserModel GetUserInfo(string userId);
     }
 }

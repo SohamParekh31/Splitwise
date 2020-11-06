@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Splitwise.DomainModel.Data;
 using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
+using Splitwise.Repository.AccountRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +16,21 @@ namespace Splitwise.Repository.FriendRepository
     {
         private readonly AppDbContext _appDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAccountRepository _accountRepository;
 
-        public FriendRepository(AppDbContext appDbContext,UserManager<ApplicationUser> userManager)
+        public FriendRepository(AppDbContext appDbContext,UserManager<ApplicationUser> userManager,IAccountRepository accountRepository)
         {
             _appDbContext = appDbContext;
             _userManager = userManager;
+            _accountRepository = accountRepository;
         }
         public Friend AddFriend(AddFriend addFriend)
         {
+            var user = _userManager.FindByEmailAsync(addFriend.Friend2).Result;
             Friend friend = new Friend()
             {
                 Friend1 = addFriend.Friend1,
-                Friend2 = addFriend.Friend2
+                Friend2 = user.Id
             };
             _appDbContext.Friends.Add(friend);
             _appDbContext.SaveChanges();
@@ -56,6 +60,11 @@ namespace Splitwise.Repository.FriendRepository
         {
             var friend = _appDbContext.Friends.Where(x => x.Friend1 == id).Include(e => e.User2);
             return friend.ToList();
+        }
+        public UserModel GetFriendDetails(string email)
+        {
+            var userModel = _accountRepository.GetUserInfo(email);
+            return userModel;
         }
     }
 }

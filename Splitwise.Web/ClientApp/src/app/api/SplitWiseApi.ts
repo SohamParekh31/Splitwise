@@ -200,6 +200,55 @@ export class AccountClient {
         return _observableOf<Register>(<any>null);
     }
 
+    getUserInfo(): Observable<UserModel> {
+      let url_ = this.baseUrl + "/api/Account/userInfo";
+      url_ = url_.replace(/[?&]$/, "");
+
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json",
+              Authorization:'Bearer ' + localStorage.getItem('token')
+          })
+      };
+
+      return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processGetUserInfo(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processGetUserInfo(<any>response_);
+              } catch (e) {
+                  return <Observable<UserModel>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<UserModel>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processGetUserInfo(response: HttpResponseBase): Observable<UserModel> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = UserModel.fromJS(resultData200);
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<UserModel>(<any>null);
+  }
+
     logout(): Observable<void> {
         let url_ = this.baseUrl + "/api/Account/logout";
         url_ = url_.replace(/[?&]$/, "");
@@ -710,7 +759,8 @@ export class FriendClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -761,7 +811,8 @@ export class FriendClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -800,6 +851,58 @@ export class FriendClient {
         }
         return _observableOf<Group>(<any>null);
     }
+
+    getFriendDetail(id: string | null): Observable<UserModel> {
+      let url_ = this.baseUrl + "/api/Friends/{id}";
+      if (id === undefined || id === null)
+          throw new Error("The parameter 'id' must be defined.");
+      url_ = url_.replace("{id}", encodeURIComponent("" + id));
+      url_ = url_.replace(/[?&]$/, "");
+
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json",
+              Authorization:'Bearer ' + localStorage.getItem('token')
+          })
+      };
+
+      return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processGetFriendDetail(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processGetFriendDetail(<any>response_);
+              } catch (e) {
+                  return <Observable<UserModel>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<UserModel>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processGetFriendDetail(response: HttpResponseBase): Observable<UserModel> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = UserModel.fromJS(resultData200);
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<UserModel>(<any>null);
+  }
 
     getFriendExpenseList(id: string | null): Observable<Settlement[]> {
         let url_ = this.baseUrl + "/api/Friends/expense/{id}";
@@ -1786,6 +1889,158 @@ export interface IAddExpense {
     isDeleted?: boolean;
     isSettled?: boolean;
     paidBy?: UserExpenseMapper[] | undefined;
+}
+
+export class UserModel implements IUserModel {
+  user?: ApplicationUser | undefined;
+  expenses?: Expense[] | undefined;
+  groups?: GroupReturn[] | undefined;
+  owesfrom?: PayerModel[] | undefined;
+  owsto?: PayerModel[] | undefined;
+  activities?: Activity[] | undefined;
+  transactions?: PaymentBook[] | undefined;
+
+  constructor(data?: IUserModel) {
+      if (data) {
+          for (var property in data) {
+              if (data.hasOwnProperty(property))
+                  (<any>this)[property] = (<any>data)[property];
+          }
+      }
+  }
+
+  init(_data?: any) {
+      if (_data) {
+          this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+          if (Array.isArray(_data["expenses"])) {
+              this.expenses = [] as any;
+              for (let item of _data["expenses"])
+                  this.expenses!.push(Expense.fromJS(item));
+          }
+          if (Array.isArray(_data["groups"])) {
+              this.groups = [] as any;
+              for (let item of _data["groups"])
+                  this.groups!.push(GroupReturn.fromJS(item));
+          }
+          if (Array.isArray(_data["owesfrom"])) {
+              this.owesfrom = [] as any;
+              for (let item of _data["owesfrom"])
+                  this.owesfrom!.push(PayerModel.fromJS(item));
+          }
+          if (Array.isArray(_data["owsto"])) {
+              this.owsto = [] as any;
+              for (let item of _data["owsto"])
+                  this.owsto!.push(PayerModel.fromJS(item));
+          }
+          if (Array.isArray(_data["activities"])) {
+              this.activities = [] as any;
+              for (let item of _data["activities"])
+                  this.activities!.push(Activity.fromJS(item));
+          }
+          if (Array.isArray(_data["transactions"])) {
+              this.transactions = [] as any;
+              for (let item of _data["transactions"])
+                  this.transactions!.push(PaymentBook.fromJS(item));
+          }
+      }
+  }
+
+  static fromJS(data: any): UserModel {
+      data = typeof data === 'object' ? data : {};
+      let result = new UserModel();
+      result.init(data);
+      return result;
+  }
+
+  toJSON(data?: any) {
+      data = typeof data === 'object' ? data : {};
+      data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+      if (Array.isArray(this.expenses)) {
+          data["expenses"] = [];
+          for (let item of this.expenses)
+              data["expenses"].push(item.toJSON());
+      }
+      if (Array.isArray(this.groups)) {
+          data["groups"] = [];
+          for (let item of this.groups)
+              data["groups"].push(item.toJSON());
+      }
+      if (Array.isArray(this.owesfrom)) {
+          data["owesfrom"] = [];
+          for (let item of this.owesfrom)
+              data["owesfrom"].push(item.toJSON());
+      }
+      if (Array.isArray(this.owsto)) {
+          data["owsto"] = [];
+          for (let item of this.owsto)
+              data["owsto"].push(item.toJSON());
+      }
+      if (Array.isArray(this.activities)) {
+          data["activities"] = [];
+          for (let item of this.activities)
+              data["activities"].push(item.toJSON());
+      }
+      if (Array.isArray(this.transactions)) {
+          data["transactions"] = [];
+          for (let item of this.transactions)
+              data["transactions"].push(item.toJSON());
+      }
+      return data;
+  }
+}
+
+export interface IUserModel {
+  user?: ApplicationUser | undefined;
+  expenses?: Expense[] | undefined;
+  groups?: GroupReturn[] | undefined;
+  owesfrom?: PayerModel[] | undefined;
+  owsto?: PayerModel[] | undefined;
+  activities?: Activity[] | undefined;
+  transactions?: PaymentBook[] | undefined;
+}
+
+export class PayerModel implements IPayerModel {
+  payerId?: string | undefined;
+  payer?: ApplicationUser | undefined;
+  amount?: number;
+
+  constructor(data?: IPayerModel) {
+      if (data) {
+          for (var property in data) {
+              if (data.hasOwnProperty(property))
+                  (<any>this)[property] = (<any>data)[property];
+          }
+      }
+  }
+
+  init(_data?: any) {
+      if (_data) {
+          this.payerId = _data["payerId"];
+          this.payer = _data["payer"] ? ApplicationUser.fromJS(_data["payer"]) : <any>undefined;
+          this.amount = _data["amount"];
+      }
+  }
+
+  static fromJS(data: any): PayerModel {
+      data = typeof data === 'object' ? data : {};
+      let result = new PayerModel();
+      result.init(data);
+      return result;
+  }
+
+  toJSON(data?: any) {
+      data = typeof data === 'object' ? data : {};
+      data["payerId"] = this.payerId;
+      data["payer"] = this.payer ? this.payer.toJSON() : <any>undefined;
+      data["amount"] = this.amount;
+      return data;
+  }
+}
+
+export interface IPayerModel {
+  payerId?: string | undefined;
+  payer?: ApplicationUser | undefined;
+  amount?: number;
 }
 
 export class Share implements IShare {

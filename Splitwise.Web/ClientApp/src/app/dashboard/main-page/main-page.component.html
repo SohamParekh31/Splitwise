@@ -1,68 +1,66 @@
 <div class="container">
-    <div class="card" style="width: 250px;">
-      <div class="card-header">
-        Details
+    <div class="w3-card-4" style="width: 250px;height: 200px; position: absolute;top: 75px;">
+      <div class="w3-container" style="margin-left: 5rem;">
+        <h4 style="margin-top: 10px;">Details</h4>
       </div>
-      <div class="card-body">
-        <ul>
-          <li>Name : SP</li>
-          <li>Email : sp@gmail.com</li>
-          <li>Balance : 0</li>
+      <div class="w3-container">
+        <ul class="w3-ul">
+          <li>Name : {{userModel?.user.firstName}}</li>
+          <li>Email : {{userModel?.user.email}}</li>
+          <li>Balance : {{userModel?.user.balance}}</li>
         </ul>
       </div>
     </div>
-    <div class="card mt-5" style="width: 250px;">
-      <div class="card-header">
-        Groups
+    <div class="w3-card-4 mt-5" style="width: 250px;height: 200px;position: absolute;top:275px">
+      <div class="w3-container row" style="margin-left: 5rem;">
+        <h4 style="margin-top: 10px;">Friend</h4>
+        <a [routerLink]="['/dashboard/addFriend']" class="ml-5 btn btn-outline-secondary btn-circle btn-circle-sm m-1" style="margin-top: 10px;">+</a>
       </div>
-      <div class="card-body">
-        <ul>
+      <div class="w3-container" style="overflow-y: scroll;margin-top: 10px;">
+        <ul class="w3-ul" *ngFor="let friend of friend">
+          <li><a [routerLink]="['/dashboard/friend',friend.user2.id]">{{friend.user2['firstName']}}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="w3-card-4" style="width: 250px;height: 450px;margin-left: 280px;position: absolute;top: 75px;">
+      <div class="w3-container" style="margin-left: 2rem;">
+        <h4 style="margin-top: 10px;">You Are Owed</h4>
+      </div>
+      <div class="w3-container">
+        <ul class="w3-ul" *ngFor="let youOwe of userModel?.owesfrom">
+          <li>{{youOwe.payer.firstName}} Owes You {{youOwe.amount | currency:'INR'}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="w3-card-4" style="width: 250px;height: 450px;margin-left: 570px;position: absolute;top: 75px;">
+      <div class="w3-container" style="margin-left: 4rem;">
+        <h4 style="margin-top: 10px;">You Owe</h4>
+      </div>
+      <div class="w3-container">
+        <ul class="w3-ul" *ngFor="let youOwe of userModel?.owsto">
+          <li>You Owe {{youOwe.amount | currency:'INR'}} to {{youOwe.payer.firstName}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="w3-card-4" style="width: 250px;height: 200px;margin-left: 850px;position: absolute;top: 75px;">
+      <div class="w3-container" style="margin-left: 3.2rem;">
+        <h4 style="margin-top: 10px;">Transaction</h4>
+      </div>
+      <div class="w3-container">
+        <ul class="w3-ul">
           <li>Friend1</li>
           <li>Friend2</li>
         </ul>
       </div>
     </div>
-    <div class="card" style="width: 250px;height: 400px;margin-left: 300px;position: absolute;top: 75px;">
-      <div class="card-header">
-        You Owe
+    <div class="w3-card-4 mt-5" style="width: 250px;height: 200px;;margin-left: 850px;position: absolute;top:275px">
+      <div class="w3-container row" style="margin-left: 4.5rem;">
+        <h4 style="margin-top: 10px;">Groups</h4>
+        <a [routerLink]="['/dashboard/addGroup']" class="ml-5 btn btn-outline-secondary btn-circle btn-circle-sm m-1" style="margin-top: 10px;">+</a>
       </div>
-      <div class="card-body">
-        <ul>
-          <li>Friend1</li>
-          <li>Friend2</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card" style="width: 250px;height: 400px;margin-left: 550px;position: absolute;top: 75px;">
-      <div class="card-header">
-        You Are Owed
-      </div>
-      <div class="card-body">
-        <ul>
-          <li>Friend1</li>
-          <li>Friend2</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card" style="width: 250px;margin-left: 850px;position: absolute;top: 75px;">
-      <div class="card-header">
-        Transaction
-      </div>
-      <div class="card-body">
-        <ul>
-          <li>Friend1</li>
-          <li>Friend2</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card" style="width: 250px;margin-left: 850px;position: absolute;top:275px">
-      <div class="card-header">
-        Groups
-      </div>
-      <div class="card-body">
-        <ul>
-          <li>Friend1</li>
-          <li>Friend2</li>
+      <div class="w3-container" style="overflow-y: scroll;margin-top: 10px;">
+        <ul class="w3-ul" *ngFor="let group of userModel?.groups">
+          <li>{{group.name}}</li>
         </ul>
       </div>
     </div>

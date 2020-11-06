@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Splitwise.DomainModel.Data;
 using Splitwise.DomainModel.Models;
 using Splitwise.Repository.DataRepository;
@@ -12,15 +13,18 @@ namespace Splitwise.Repository.ActivityRepository
     public class ActivityRepository : IActivityRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ActivityRepository(AppDbContext appDbContext)
+        public ActivityRepository(AppDbContext appDbContext,UserManager<ApplicationUser> userManager)
         {
             _appDbContext = appDbContext;
+            _userManager = userManager;
         }
 
         public List<Activity> ActivityList(string id)
         {
-            var activity = _appDbContext.Activities.Where(x => x.UserId == id).Include(e => e.group);
+            var user = _userManager.FindByEmailAsync(id).Result;
+            var activity = _appDbContext.Activities.Where(x => x.UserId == user.Id).Include(e => e.group);
             return activity.ToList();
         }
     }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Splitwise.Core.ApplicationClasses;
 using Splitwise.DomainModel.Models;
+using Splitwise.DomainModel.Models.ApplicationClasses;
 using Splitwise.Repository.AccountRepository;
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,15 @@ namespace Splitwise.Core.Controllers
             {
                 return BadRequest(new { message = "User with Same Email Exist!!" });
             }
+        }
+        [HttpGet]
+        [Route("userInfo")]
+        public ActionResult<UserModel> GetUserInfo()
+        {
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            var userModel = _accountRepository.GetUserInfo(userId);
+            return Ok(userModel);
         }
         [AllowAnonymous]
         [HttpGet]

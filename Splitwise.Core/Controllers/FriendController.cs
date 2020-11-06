@@ -57,5 +57,13 @@ namespace Splitwise.Core.Controllers
             var settlement = _friendRepository.GetFriendsExpenseList(id, userId);
             return Ok(settlement);
         }
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<UserModel> GetFriendDetail(string id)
+        {
+            var user = userManager.FindByIdAsync(id).Result;
+            var userModel = _friendRepository.GetFriendDetails(user.Email);
+            return Ok(userModel);
+        }
     }
 }

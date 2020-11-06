@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h4><div class="card-title">
+        Name : {{ friendDetail?.user.firstName }}
+        {{ friendDetail?.user.lastName }}
+      </div>
+    </h4>
+    <p class="card-text mt-1">Email : {{friendDetail?.user.email}}</p>
+    <p class="card-text mt-1">Contact Number : {{friendDetail?.user.phoneNumber}}</p>
+    <div class="mt-4">
+      <h5>Group List</h5>
+      <ul>
+        <li class="card-text mt-1" *ngFor="let group of friendDetail?.groups">{{group.name}}</li>
+      </ul>
+    </div>
+    <div class="mt-4">
+      <h5>Owes To</h5>
+      <ul>
+        <li class="card-text mt-1" *ngFor="let youOwe of friendDetail?.owsto">{{youOwe.amount  | currency:'INR'}} to {{youOwe.payer.firstName}}</li>
+      </ul>
+    </div>
+    <div class="mt-4">
+      <h5>Owes From</h5>
+      <ul>
+        <li class="card-text mt-1" *ngFor="let oweFrom of friendDetail?.owesfrom">{{oweFrom.amount  | currency:'INR'}} from {{oweFrom.payer.firstName}}</li>
+      </ul>
+    </div>
+    <button class="btn btn-outline-danger mt-1" (click)="DeleteFriend(friendDetail?.user)">Delete Friend</button>
+  </div>
+  </div>
+</div>
