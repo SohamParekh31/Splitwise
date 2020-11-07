@@ -1,19 +1,22 @@
 <div class="container">
-  <div class="col-sm-2"></div>
-  <div class="col-sm-10">
-    <div class="card">
-      <div class="card-header">
-        <div style="margin-left: 25rem;">Acitvity</div>
-      </div>
-      <div class="card-body">
-        <ul *ngFor="let activity of activityList">
-          <li>
-            {{activity.description}}<br>
-            {{activity.date | date:"dd/MM/yy" }}
-          </li>
-        </ul>
+  <h3 class="card-title"></h3>
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title d-flex justify-content-center"><h3>Activity</h3></div>
+        </div>
+        <div class="card-body">
+          <ul *ngFor="let activity of activityList">
+            <li>
+              {{ activity.description }}<br />
+              {{ activity.date | date: "dd/MM/yy" }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+    <div class="col-sm-1"></div>
   </div>
-  <div class="col-sm-2"></div>
 </div>

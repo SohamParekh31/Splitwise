@@ -12,6 +12,7 @@ using Splitwise.Repository.ActivityRepository;
 
 namespace Splitwise.Core.Controllers
 {
+    [Authorize]
     [Route("api/Activities")]
     [ApiController]
     public class ActivityController : Controller

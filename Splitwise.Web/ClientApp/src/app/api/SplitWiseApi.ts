@@ -435,7 +435,8 @@ export class ExpenseClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -486,7 +487,8 @@ export class ExpenseClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -541,7 +543,8 @@ export class ExpenseClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -592,7 +595,8 @@ export class ExpenseClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/octet-stream",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -642,7 +646,8 @@ export class ExpenseClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -915,7 +920,8 @@ export class FriendClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -1088,7 +1094,8 @@ export class GroupClient {
           observe: "response",
           responseType: "blob",
           headers: new HttpHeaders({
-              "Accept": "application/json"
+              "Accept": "application/json",
+              Authorization:'Bearer ' + localStorage.getItem('token')
           })
       };
 
@@ -1143,7 +1150,8 @@ export class GroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 
@@ -1246,7 +1254,8 @@ export class GroupClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                Authorization:'Bearer ' + localStorage.getItem('token')
             })
         };
 

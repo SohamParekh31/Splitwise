@@ -13,6 +13,11 @@ export class GroupDetailComponent implements OnInit {
   ID:number;
   groupDetails:Splitwise.AddGroup;
   groupExpenseList:Splitwise.Expense[] = [];
+  payee:string;
+  payer:string;
+  amount:Number;
+  groupId:Number;
+  settleUp:Splitwise.SettleUp;
   constructor(private groupService:Splitwise.GroupClient,private activatedRoute:ActivatedRoute,private expenseService:Splitwise.ExpenseClient) { }
 
   ngOnInit(): void {
@@ -32,6 +37,7 @@ export class GroupDetailComponent implements OnInit {
     this.groupService.getGroupBasedOnId(id).subscribe(
       (data) => {
         this.groupDetails = data;
+        this.groupId = this.groupDetails?.groupId;
       }
     );
   }
@@ -44,5 +50,13 @@ export class GroupDetailComponent implements OnInit {
       );
     }
   }
-
+  onSubmit(form){
+    this.settleUp = form.value;
+    console.log(this.settleUp);
+    this.expenseService.settlment(this.settleUp).subscribe(
+      () => {
+        console.log("Settlement Success!");
+      }
+    );
+  }
 }

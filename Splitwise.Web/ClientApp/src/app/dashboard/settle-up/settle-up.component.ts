@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-settle-up',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettleUpComponent implements OnInit {
 
+  payee:string;
+  payer:string;
+  amount:Number;
   constructor() { }
 
   ngOnInit(): void {
+  }
+  onSubmit(form:NgForm){
+    console.log(form.value);
   }
 
 }

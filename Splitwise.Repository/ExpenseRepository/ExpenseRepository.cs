@@ -207,23 +207,50 @@ namespace Splitwise.Repository.ExpenseRepository
             return expense;
         }
 
-        public PaymentBook SettlementExpense(SettleUp settleUp)
+        public PaymentBook SettlementExpense(SettleUp settleUp,string email)
         {
+            var user = _userManager.FindByEmailAsync(email).Result;
+            var payerDetails = _userManager.FindByEmailAsync(settleUp.Payer).Result;
+            var payeeDetails = _userManager.FindByEmailAsync(settleUp.Payee).Result;
             Settlement settlement;
             if (settleUp.GroupId != null)
-                settlement = _appDbContext.Settlements.FirstOrDefault(x => x.Payee == settleUp.Payee && x.Payer == settleUp.Payer && x.GroupId == settleUp.GroupId);
+            {
+                settlement = _appDbContext.Settlements.FirstOrDefault(x => x.Payee == payeeDetails.Id && x.Payer == payerDetails.Id && x.GroupId == settleUp.GroupId);
+            }
             else
-                settlement = _appDbContext.Settlements.FirstOrDefault(x => x.Payee == settleUp.Payee && x.Payer == settleUp.Payer);
+            {
+                settlement = _appDbContext.Settlements.FirstOrDefault(x => x.Payee == payeeDetails.Id && x.Payer == payerDetails.Id);
+            }
             PaymentBook paymentBook = new PaymentBook()
             {
-                Payer = settleUp.Payer,
-                Payee = settleUp.Payee,
+                Payer = payerDetails.Id,
+                Payee = payeeDetails.Id,
                 Paid_Amount = settleUp.Amount,
                 SettlementId = settlement.SettlementId
             };
             _appDbContext.PaymentBooks.Add(paymentBook);
             settlement.Amount -= settleUp.Amount;
             _appDbContext.Settlements.Update(settlement);
+            if(payeeDetails.Id == user.Id)
+            {
+                Activity activity = new Activity()
+                {
+                    Description = "You Received Payment of Rs."+settleUp.Amount+" from " + payerDetails.FirstName,
+                    UserId = user.Id,
+                    Date = DateTime.Today
+                };
+                _appDbContext.Activities.Add(activity);
+            }
+            else if(payerDetails.Id == user.Id)
+            {
+                Activity activity = new Activity()
+                {
+                    Description = "You Paid  Rs." + settleUp.Amount + " to " + payeeDetails.FirstName,
+                    UserId = user.Id,
+                    Date = DateTime.Today
+                };
+                _appDbContext.Activities.Add(activity);
+            }
             _appDbContext.SaveChanges();
             return paymentBook;
         }

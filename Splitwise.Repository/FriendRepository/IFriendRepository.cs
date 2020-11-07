@@ -13,6 +13,6 @@ namespace Splitwise.Repository.FriendRepository
         List<Friend> GetFriendsList(string id);
         void DeleteFriend(string id,string userId);
         List<Settlement> GetFriendsExpenseList(string friendId, string currentUserId);
-        UserModel GetFriendDetails(string email);
+        UserModel GetFriendDetails(string email,string userId);
     }
 }

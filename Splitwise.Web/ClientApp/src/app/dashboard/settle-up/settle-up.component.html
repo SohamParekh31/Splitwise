@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <h2>Settle Up</h2>
-    <form style="margin-top: 1rem;">
+    <form style="margin-top: 1rem;" #form="ngForm" novalidate (ngSubmit)="onSubmit(form)">
       <div class="form-group row">
         <label for="payer" class="col-sm-2 col-form-label">Payer</label>
         <div class="col-sm-5">
@@ -9,6 +9,8 @@
             class="form-control"
             id="payer"
             placeholder="Payer's Email"
+            name="payer"
+            [(ngModel)]="payer"
           />
         </div>
       </div>
@@ -23,6 +25,8 @@
             class="form-control"
             id="payee"
             placeholder="Payee's Email"
+            name="payee"
+            [(ngModel)]="payee"
           />
         </div>
       </div>
@@ -37,6 +41,8 @@
             class="form-control"
             id="amount"
             placeholder="Amount"
+            name="amount"
+            [(ngModel)]="amount"
           />
         </div>
       </div>

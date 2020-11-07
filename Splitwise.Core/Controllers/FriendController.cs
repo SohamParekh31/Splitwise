@@ -61,8 +61,11 @@ namespace Splitwise.Core.Controllers
         [Route("{id}")]
         public ActionResult<UserModel> GetFriendDetail(string id)
         {
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            var currentUserId = userManager.FindByEmailAsync(userId).Result;
             var user = userManager.FindByIdAsync(id).Result;
-            var userModel = _friendRepository.GetFriendDetails(user.Email);
+            var userModel = _friendRepository.GetFriendDetails(user.Email,currentUserId.Id);
             return Ok(userModel);
         }
     }

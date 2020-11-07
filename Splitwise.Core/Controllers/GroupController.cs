@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
 using Splitwise.Repository.GroupRepository;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Splitwise.Core.Controllers
 {
+    [Authorize]
     [Route("api/Groups")]
     [ApiController]
     public class GroupController : Controller

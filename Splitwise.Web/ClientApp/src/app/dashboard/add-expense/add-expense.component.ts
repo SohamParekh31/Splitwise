@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Splitwise } from 'src/app/api/SplitWiseApi';
 
 
@@ -14,7 +15,8 @@ export class AddExpenseComponent implements OnInit {
   id:string = localStorage.getItem('id');
   group:Splitwise.GroupReturn[] = [];
   expense:Splitwise.AddExpense;
-  constructor(private fb: FormBuilder,private groupService:Splitwise.GroupClient,private expenseServie:Splitwise.ExpenseClient) { }
+  constructor(private fb: FormBuilder,private groupService:Splitwise.GroupClient
+      ,private expenseServie:Splitwise.ExpenseClient,private route:Router) { }
 
   get paidBy(){
     return <FormArray>this.expenseForm.get('paidBy');
@@ -74,6 +76,7 @@ export class AddExpenseComponent implements OnInit {
     this.expenseServie.postExpense(this.expense).subscribe(
       () => {
         console.log("Expense Added!");
+        this.route.navigate(['/dashboard/splitwise']);
       }
     );
   }

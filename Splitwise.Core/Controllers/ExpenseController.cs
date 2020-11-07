@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Splitwise.DomainModel.Models;
 using Splitwise.DomainModel.Models.ApplicationClasses;
 using Splitwise.Repository.ExpenseRepository;
@@ -9,6 +10,7 @@ using System.Text;
 
 namespace Splitwise.Core.Controllers
 {
+    [Authorize]
     [Route("api/Expenses")]
     [ApiController]
     public class ExpenseController : Controller
@@ -59,7 +61,9 @@ namespace Splitwise.Core.Controllers
         [Route("settlement")]
         public ActionResult<PaymentBook> Settlment(SettleUp settleUp)
         {
-            _expenseRepository.SettlementExpense(settleUp);
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            _expenseRepository.SettlementExpense(settleUp,userId);
             return Ok();
         }
 

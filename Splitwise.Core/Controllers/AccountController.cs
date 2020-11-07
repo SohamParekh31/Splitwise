@@ -101,6 +101,7 @@ namespace Splitwise.Core.Controllers
                 return BadRequest(new { message = "User with Same Email Exist!!" });
             }
         }
+        [Authorize]
         [HttpGet]
         [Route("userInfo")]
         public ActionResult<UserModel> GetUserInfo()
