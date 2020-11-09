@@ -70,7 +70,7 @@
       </div>
       <div class="w3-container" style="overflow-y: scroll;margin-top: 10px;">
         <ul class="w3-ul" *ngFor="let group of userModel?.groups">
-          <li>{{group.name}}</li>
+          <li><a [routerLink]="['/dashboard/myGroups', group.groupId]">{{group.name}}</a></li>
         </ul>
       </div>
     </div>

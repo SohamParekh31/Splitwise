@@ -30,7 +30,7 @@ namespace Splitwise.Repository.AccountRepository
 
         public AccountRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
                         IConfiguration configuration, IExpenseRepository expenseRepository, IGroupRepository groupRepository,
-                        IActivityRepository activityRepository,AppDbContext appDbContext)
+                        IActivityRepository activityRepository, AppDbContext appDbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -43,7 +43,7 @@ namespace Splitwise.Repository.AccountRepository
         public async Task<string> Login(Login login)
         {
             var loggedInUser = await userManager.FindByEmailAsync(login.Email);
-            if(loggedInUser != null)
+            if (loggedInUser != null)
             {
                 var result = await signInManager.PasswordSignInAsync(loggedInUser.UserName, login.Password, login.RememberMe, false);
                 if (result.Succeeded)
@@ -82,7 +82,7 @@ namespace Splitwise.Repository.AccountRepository
                 Balance = 0
             };
             var checkUser = await userManager.FindByEmailAsync(register.Email);
-            if(checkUser == null)
+            if (checkUser == null)
             {
                 return await userManager.CreateAsync(user, register.Password);
             }
@@ -91,7 +91,7 @@ namespace Splitwise.Repository.AccountRepository
 
         public UserModel GetUserInfo(string userId)
         {
-            List<PayerModel> Owesfrom = new List<PayerModel>();
+            List<PayerModel> Owsfrom = new List<PayerModel>();
             List<PayerModel> Owsto = new List<PayerModel>();
             UserModel userModel = new UserModel();
             userModel.User = userManager.FindByEmailAsync(userId).Result;
@@ -100,33 +100,86 @@ namespace Splitwise.Repository.AccountRepository
             userModel.Activities = activityRepository.ActivityList(userId);
             var appUser = userManager.FindByEmailAsync(userId).Result;
             var settlements = appDbContext.Settlements.Where(x => x.Payee == appUser.Id || x.Payer == appUser.Id).ToList();
-            foreach (var item in settlements)
+            var owesToGroup = (from item in settlements
+                               where item.Payer == appUser.Id
+                               group item by item.Payee into Owesto
+                               orderby Owesto.Key
+                               select new
+                               {
+                                   name = Owesto.Key,
+                                   amount = Owesto.Sum(x => x.Amount)
+                               }).ToList();
+            var owesFromGroup = (from item in settlements
+                                 where item.Payee == appUser.Id
+                                 group item by item.Payer into Owesfrom
+                                 orderby Owesfrom.Key
+                                 select new
+                                 {
+                                     name = Owesfrom.Key,
+                                     amount = Owesfrom.Sum(x => x.Amount)
+                                 }).ToList();
+            foreach (var item in owesFromGroup)
             {
-                if(item.Payee == appUser.Id)
+                var user = userManager.FindByIdAsync(item.name).Result;
+
+                
+                if (owesToGroup.Count != 0)
                 {
-                    var user = userManager.FindByIdAsync(item.Payer).Result;
                     PayerModel payerModel = new PayerModel()
                     {
-                        Amount = item.Amount,
+                        Amount = 0,
                         Payer = user,
                         PayerId = user.Id
                     };
-                    Owesfrom.Add(payerModel);
+                    foreach (var subitem in owesToGroup)
+                    {
+                        var result = item.amount - subitem.amount;
+                        if (item.name == subitem.name)
+                        {
+                            if (result > 0)
+                            {
+
+                                payerModel.Amount = result;
+                                Owsfrom.Add(payerModel);
+
+                            }
+                            else if (result < 0)
+                            {
+
+                                payerModel.Amount = result * -1;
+                                Owsto.Add(payerModel);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            var appuser = userManager.FindByIdAsync(item.name).Result;
+                            PayerModel payerModel1 = new PayerModel
+                            {
+                                Amount = item.amount,
+                                PayerId = item.name,
+                                Payer = appuser
+                            };
+                            Owsfrom.Add(payerModel1);
+                        }
+                    }
                 }
                 else
                 {
-                    var user = userManager.FindByIdAsync(item.Payee).Result;
                     PayerModel payerModel = new PayerModel()
                     {
-                        Amount = item.Amount,
+                        Amount = item.amount,
                         Payer = user,
                         PayerId = user.Id
                     };
-                    Owsto.Add(payerModel);
+                    Owsfrom.Add(payerModel);
                 }
             }
-            userModel.Owesfrom = Owesfrom;
-            userModel.Owsto = Owsto;
+            userModel.Owesfrom = Owsfrom.ToList();
+            userModel.Owsto = Owsto.ToList();
             return userModel;
         }
     }

@@ -22,7 +22,7 @@ export class MainPageComponent implements OnInit {
     this.accountService.getUserInfo().subscribe(
       (data) => {
         this.userModel = data;
-        // console.log(this.userModel);
+        //console.log(this.userModel);
       }
     );
     this.friendService.getFriendList().subscribe(

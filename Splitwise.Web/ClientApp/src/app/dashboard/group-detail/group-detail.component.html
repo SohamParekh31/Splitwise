@@ -40,9 +40,8 @@
       <p class="card-text">
         Created By: {{ expense.user.firstName }} {{ expense.user.lastName }}
       </p>
-      <a href="#" class="btn btn-outline-primary mr-2"
-        ><i class="far fa-edit"></i
-      ></a>
+      <a [routerLink]="['/dashboard/myExpense', expense.expenseId]" class="btn btn-outline-primary mr-2"
+        ><i class="fa fa-info-circle" aria-hidden="true"></i></a>
       <a
         *ngIf="expense.createdBy == userId"
         (click)="deleteExpense(expense)"
