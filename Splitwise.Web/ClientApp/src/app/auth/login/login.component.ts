@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
         var token = localStorage.getItem('token');
         const payLoad = JSON.parse(window.atob(token.split('.')[1]));
         localStorage.setItem('id',payLoad['ID']);
-        console.log("Login Successfull");
         this.router.navigate(['/dashboard/splitwise']);
       }
     );

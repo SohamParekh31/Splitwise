@@ -7,6 +7,8 @@ namespace Splitwise.DomainModel.Models.ApplicationClasses
     public class AddExpense
     {
         public int ExpenseId { get; set; }
+        public ApplicationUser user { get; set; }
+        public Group Group { get; set; }
         public List<Share> Shares { get; set; }
         public string  Description { get; set; }
         public int? GroupId { get; set; }

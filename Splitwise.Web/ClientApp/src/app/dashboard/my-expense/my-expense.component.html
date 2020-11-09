@@ -1,12 +1,12 @@
 <div class="container">
-  <a [routerLink]="['/dashboard/addExpense']" class="btn btn-outline-dark mb-2">Add Expense</a>
+  <a [routerLink]="['/dashboard/addExpense']" class="btn btn-outline-dark mb-2" style="border-radius: 50rem;">Add Expense</a>
   <div class="card mb-1" *ngFor="let expense of expense | paginate: { itemsPerPage: 2, currentPage: p }">
     <div class="card-body">
       <h4 class="card-title">{{expense.description}}</h4>
       <p class="card-text">Amount: {{expense.amount}}</p>
       <p class="card-text">Split Type: {{expense.splitType}}</p>
       <p class="card-text">Created By: {{expense.user.firstName}} {{expense.user.lastName}}</p>
-      <a href="#" class="btn btn-outline-primary mr-2"><i class="far fa-edit"></i></a>
+      <a [routerLink]="['/dashboard/myExpense',expense.expenseId]" class="btn btn-outline-primary mr-2"><i class="far fa-edit"></i></a>
       <a (click)="deleteExpense(expense)" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
     </div>
   </div>

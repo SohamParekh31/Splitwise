@@ -76,15 +76,6 @@ namespace Splitwise.Core.Controllers
                 }
             }
             return BadRequest(new { message = "Username or password is incorrect." });
-            //var loginReturnModel = await _accountRepository.Login(login);
-            //if (loginReturnModel != null)
-            //{
-            //    return Ok(loginReturnModel);
-            //}
-            //else
-            //{
-            //    return BadRequest(new { message = "Username or password is incorrect." });
-            //}
         }
         [AllowAnonymous]
         [HttpPost]

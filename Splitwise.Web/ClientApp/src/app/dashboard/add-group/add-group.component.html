@@ -10,7 +10,14 @@
             id="groupName"
             formControlName="name"
             placeholder="Name"
+            required
           />
+          <div
+          class="alert-danger"
+          *ngIf="groupForm.get('name').errors && (groupForm.get('name').dirty || groupForm.get('name').touched)"
+        >
+          <span *ngIf="groupForm.get('name').errors.required">Group Name is required</span>
+        </div>
         </div>
       </div>
 
@@ -25,7 +32,14 @@
             class="form-control"
             id="datetime"
             placeholder="Date"
+            required
           />
+          <div
+          class="alert-danger"
+          *ngIf="groupForm.get('date').errors && (groupForm.get('date').dirty || groupForm.get('date').touched)"
+        >
+          <span *ngIf="groupForm.get('date').errors.required">Date is required</span>
+        </div>
         </div>
       </div>
 
@@ -44,7 +58,7 @@
 
       <div class="form-group row" style="margin-top: 2rem;">
         <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!groupForm.valid">Create</button>
           <a type="submit" [routerLink]="['/dashboard/splitwise']"
            class="btn btn-outline-warning ml-2">Cancel</a>
         </div>

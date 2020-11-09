@@ -10,7 +10,7 @@ namespace Splitwise.Repository.ExpenseRepository
     public interface IExpenseRepository
     {
         List<Expense> GetExpense(string id);
-        Expense GetExpenseBasedOnId(int id);
+        AddExpense GetExpenseBasedOnId(int id);
         Expense AddExpense(AddExpense addExpense);
         void AddExpenseInfo(AddExpense addExpense, Expense expense);
         void EditExpense(int id, AddExpense editExpense);

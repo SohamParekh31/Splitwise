@@ -18,6 +18,7 @@ export class GroupDetailComponent implements OnInit {
   amount:Number;
   groupId:Number;
   settleUp:Splitwise.SettleUp;
+  userId = localStorage.getItem('id');
   constructor(private groupService:Splitwise.GroupClient,private activatedRoute:ActivatedRoute,private expenseService:Splitwise.ExpenseClient) { }
 
   ngOnInit(): void {
@@ -53,10 +54,11 @@ export class GroupDetailComponent implements OnInit {
   onSubmit(form){
     this.settleUp = form.value;
     console.log(this.settleUp);
-    this.expenseService.settlment(this.settleUp).subscribe(
-      () => {
-        console.log("Settlement Success!");
-      }
-    );
+    location.reload();
+    // this.expenseService.settlment(this.settleUp).subscribe(
+    //   () => {
+    //     console.log("Settlement Success!");
+    //   }
+    // );
   }
 }

@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="card mb-1">
+    <div class="card-body">
+      <h4 class="card-title">Expense Name: {{expense?.description}}</h4>
+      <p class="card-text" style="margin-top: 3rem;">Created By: {{expense?.user['firstName']}} {{expense?.user['lastName']}}</p>
+      <p class="card-text">Date: {{expense?.date | date:"MM/dd/yy" }}</p>
+      <p class="card-text">Expense Amount: {{expense?.amount }}</p>
+      <p class="card-text" *ngIf="expense?.groupId != null">Group: {{expense?.group.name}}</p>
+      <p class="card-text">Split Type: {{expense?.splitType }}</p>
+      <div>
+        <p class="card-text">Expense Member:</p>
+        <ul *ngFor="let expenseMembers of expense?.shares">
+          <li>
+            Expense Member : {{expenseMembers.name}}
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p class="card-text">Paid By:</p>
+        <ul *ngFor="let paidBy of expense?.paidBy">
+          <li>
+            Name : {{paidBy.name}}
+          </li>
+          <li>
+            Amount : {{paidBy.paid_Amount}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

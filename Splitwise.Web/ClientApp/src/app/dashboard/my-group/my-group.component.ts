@@ -11,6 +11,7 @@ export class MyGroupComponent implements OnInit {
 
   p: number = 1;
   group:Splitwise.GroupReturn[] = [];
+  userId = localStorage.getItem('id');
   constructor(private groupService:Splitwise.GroupClient) { }
 
   ngOnInit(): void {

@@ -8,6 +8,11 @@ import { Splitwise } from 'src/app/api/SplitWiseApi';
 })
 export class MainPageComponent implements OnInit {
 
+  payee:string;
+  payer:string;
+  amount:Number;
+  groupId:Number;
+  settleUp:Splitwise.SettleUp;
   friend:Splitwise.Friend[] = [];
   userModel:Splitwise.UserModel;
   constructor(private friendService:Splitwise.FriendClient,
@@ -27,4 +32,14 @@ export class MainPageComponent implements OnInit {
     );
   }
 
+  onSubmit(form){
+    this.settleUp = form.value;
+    console.log(this.settleUp);
+    location.reload();
+    // this.expenseService.settlment(this.settleUp).subscribe(
+    //   () => {
+    //     console.log("Settlement Success!");
+    //   }
+    // );
+  }
 }

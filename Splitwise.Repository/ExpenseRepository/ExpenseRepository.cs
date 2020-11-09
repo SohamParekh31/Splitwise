@@ -197,14 +197,50 @@ namespace Splitwise.Repository.ExpenseRepository
             return expenseList.ToList();
         }
 
-        public Expense GetExpenseBasedOnId(int id)
+        public AddExpense GetExpenseBasedOnId(int id)
         {
             var expense = _appDbContext.Expenses.FirstOrDefault(x => x.ExpenseId == id);
             var user = _userManager.FindByIdAsync(expense.CreatedBy).Result;
             var group = _appDbContext.Groups.FirstOrDefault(x => x.GroupId == expense.GroupId);
-            expense.User = user;
-            expense.Group = group;
-            return expense;
+            var expenseInfo = _appDbContext.ExpenseInfos.Where(x => x.ExpenseId == id).ToList();
+            AddExpense getExpense = new AddExpense();
+            getExpense.ExpenseId = expense.ExpenseId;
+            getExpense.Description = expense.Description;
+            getExpense.Amount = expense.Amount;
+            getExpense.SplitType = expense.SplitType;
+            getExpense.GroupId = expense.GroupId;
+            getExpense.Date = expense.Date;
+            getExpense.CreatedBy = expense.CreatedBy;
+            getExpense.IsDeleted = expense.IsDeleted;
+            getExpense.IsSettled = expense.IsSettled;
+            getExpense.user = user;
+            getExpense.Group = group;
+            getExpense.Shares = new List<Share>();
+            getExpense.PaidBy = new List<UserExpenseMapper>();
+            foreach (var item in expenseInfo)
+            {
+                var appUser = _userManager.FindByIdAsync(item.UserId).Result;
+                if(item.Paid_Amount != 0)
+                {
+                    UserExpenseMapper userExpenseMapper = new UserExpenseMapper()
+                    {
+                        Name = appUser.FirstName,
+                        Email = appUser.Email,
+                        Paid_Amount = item.Paid_Amount
+                    };
+                    getExpense.PaidBy.Add(userExpenseMapper);
+                }
+                else
+                {
+                    Share share = new Share
+                    {
+                        Name = appUser.FirstName,
+                        Email = appUser.Email
+                    };
+                    getExpense.Shares.Add(share);
+                }
+            }
+            return getExpense;
         }
 
         public PaymentBook SettlementExpense(SettleUp settleUp,string email)

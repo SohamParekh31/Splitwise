@@ -155,7 +155,8 @@ namespace Splitwise.Repository.GroupRepository
             {
                 GroupName = group.Name,
                 GroupId = group.GroupId,
-                UserId = x.UserId
+                UserId = x.UserId,
+                createdBy = group.CreatedBy
             });
             foreach (var item in groupList)
             {
@@ -163,7 +164,8 @@ namespace Splitwise.Repository.GroupRepository
                 {
                     GroupId = item.GroupId,
                     Name = item.GroupName,
-                    UserId = item.UserId
+                    UserId = item.UserId,
+                    createdBy = item.createdBy
                 };
                 groupReturns.Add(groupReturn);
             }

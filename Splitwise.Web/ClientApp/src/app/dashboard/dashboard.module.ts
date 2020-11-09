@@ -9,13 +9,13 @@ import { MyExpenseComponent } from './my-expense/my-expense.component';
 import { AddGroupComponent } from './add-group/add-group.component';
 import { AddExpenseComponent } from './add-expense/add-expense.component';
 import { AddFriendComponent } from './add-friend/add-friend.component';
-import { SettleUpComponent } from './settle-up/settle-up.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from '../auth/auth.guard';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { GroupEditComponent } from './group-edit/group-edit.component';
 import { FriendDetailComponent } from './friend-detail/friend-detail.component';
+import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 
 
 @NgModule({
@@ -28,10 +28,10 @@ import { FriendDetailComponent } from './friend-detail/friend-detail.component';
     AddGroupComponent,
     AddExpenseComponent,
     AddFriendComponent,
-    SettleUpComponent,
     GroupDetailComponent,
     GroupEditComponent,
-    FriendDetailComponent
+    FriendDetailComponent,
+    ExpenseDetailComponent
   ],
   imports: [
     CommonModule,
@@ -44,10 +44,10 @@ import { FriendDetailComponent } from './friend-detail/friend-detail.component';
       { path: 'activity', component: ActivityComponent,canActivate:[AuthGuard]},
       { path: 'myGroups', component: MyGroupComponent,canActivate:[AuthGuard]},
       { path: 'myExpense', component: MyExpenseComponent,canActivate:[AuthGuard]},
+      { path: 'myExpense/:id', component: ExpenseDetailComponent,canActivate:[AuthGuard]},
       { path: 'addGroup', component: AddGroupComponent,canActivate:[AuthGuard]},
       { path: 'addExpense', component: AddExpenseComponent,canActivate:[AuthGuard]},
       { path: 'addFriend', component: AddFriendComponent,canActivate:[AuthGuard]},
-      { path: 'settleUp', component: SettleUpComponent,canActivate:[AuthGuard]},
       { path: 'myGroups/:id', component: GroupDetailComponent,canActivate:[AuthGuard]},
       { path: 'myGroups/Edit/:id', component: GroupEditComponent,canActivate:[AuthGuard]},
       { path: 'friend/:id', component: FriendDetailComponent,canActivate:[AuthGuard]},

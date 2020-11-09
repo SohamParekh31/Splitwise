@@ -1,11 +1,14 @@
 <div class="container">
-  <a [routerLink]="['/dashboard/settleUp']" class="btn btn-outline-secondary mr-3" style="border-radius: 50rem;float: right;">Settle Up</a>
-  <a [routerLink]="['/dashboard/addExpense']" class="btn btn-outline-secondary mr-2" style="border-radius: 50rem;float: right;">Add Expense</a>
-    <div class="w3-card-4 col-md-3" style="width: 250px;height: 200px; position: absolute;top: 130px;">
+  <div class="row">
+    <button data-toggle="modal" data-target="#settleUpModel"  class="btn btn-outline-secondary mr-3" style="border-radius: 50rem;float: right;">Settle Up</button>
+    <a [routerLink]="['/dashboard/addExpense']" class="btn btn-outline-secondary mr-2" style="border-radius: 50rem;float: right;">Add Expense</a>
+  </div>
+  <div class="row">
+    <div class="w3-card-4 mt-3 col-sm-3 ml-5">
       <div class="w3-container d-flex justify-content-center mb-2 mt-3">
         <h4>Details</h4>
       </div>
-      <div class="w3-container">
+      <div class="w3-container" style="height: 200px;">
         <ul class="w3-ul">
           <li>Name : {{userModel?.user.firstName}}</li>
           <li>Email : {{userModel?.user.email}}</li>
@@ -14,7 +17,41 @@
       </div>
     </div>
 
-    <div class="w3-card-4 mt-5 col-md-3" style="width: 250px;height: 200px;position: absolute;top:330px">
+    <div class="w3-card-4 mt-3 col-sm-3 ml-5">
+      <div class="w3-container d-flex justify-content-center mb-2 mt-3">
+        <h4>You Are Owed</h4>
+      </div>
+      <div class="w3-container" style="overflow-y: scroll;height: 200px;">
+        <ul class="w3-ul" *ngFor="let youOwe of userModel?.owesfrom">
+          <li *ngIf="youOwe.amount != 0">{{youOwe.payer.firstName}} Owes You {{youOwe.amount | currency:'INR'}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="w3-card-4 mt-3 col-sm-3 ml-5">
+      <div class="w3-container d-flex justify-content-center mb-2 mt-3">
+        <h4>You Owe</h4>
+      </div>
+      <div class="w3-container" style="overflow-y: scroll;height: 200px">
+        <ul class="w3-ul" *ngFor="let youOwe of userModel?.owsto">
+          <li *ngIf="youOwe.amount != 0">You Owe {{youOwe.amount | currency:'INR'}} to {{youOwe.payer.firstName}}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- <div class="w3-card-4 col-sm-3">
+      <div class="w3-container d-flex justify-content-center mb-2 mt-3">
+        <h4>Transaction</h4>
+      </div>
+      <div class="w3-container">
+        <ul class="w3-ul">
+          <li>Friend1</li>
+          <li>Friend2</li>
+        </ul>
+      </div>
+    </div> -->
+  </div>
+  <div class="row">
+    <div class="w3-card-4 mt-5 col-sm-3" style="margin-left: 14rem;height: 220px;">
       <div class="w3-container row d-flex justify-content-center mb-2 mt-3">
         <h4>Friend</h4>
         <a [routerLink]="['/dashboard/addFriend']" class="ml-5 btn btn-outline-secondary btn-circle btn-circle-sm m-1">+</a>
@@ -26,39 +63,7 @@
       </div>
     </div>
 
-    <div class="w3-card-4 col-md-3" style="width: 250px;height: 450px;margin-left: 280px;position: absolute;top: 130px;">
-      <div class="w3-container d-flex justify-content-center mb-2 mt-3">
-        <h4>You Are Owed</h4>
-      </div>
-      <div class="w3-container">
-        <ul class="w3-ul" *ngFor="let youOwe of userModel?.owesfrom">
-          <li *ngIf="youOwe.amount != 0">{{youOwe.payer.firstName}} Owes You {{youOwe.amount | currency:'INR'}}</li>
-        </ul>
-      </div>
-    </div>
-    <div class="w3-card-4 col-md-3" style="width: 250px;height: 450px;margin-left: 570px;position: absolute;top: 130px;">
-      <div class="w3-container d-flex justify-content-center mb-2 mt-3">
-        <h4>You Owe</h4>
-      </div>
-      <div class="w3-container">
-        <ul class="w3-ul" *ngFor="let youOwe of userModel?.owsto">
-          <li *ngIf="youOwe.amount != 0">You Owe {{youOwe.amount | currency:'INR'}} to {{youOwe.payer.firstName}}</li>
-        </ul>
-      </div>
-    </div>
-    <div class="w3-card-4 col-md-3" style="width: 250px;height: 200px;margin-left: 850px;position: absolute;top: 130px;">
-      <div class="w3-container d-flex justify-content-center mb-2 mt-3">
-        <h4>Transaction</h4>
-      </div>
-      <div class="w3-container">
-        <ul class="w3-ul">
-          <li>Friend1</li>
-          <li>Friend2</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="w3-card-4 mt-5 col-md-3" style="width: 250px;height: 200px;;margin-left: 850px;position: absolute;top:330px">
+    <div class="w3-card-4 mt-5 col-sm-3" style="margin-left: 3rem;height: 220px">
       <div class="w3-container row d-flex justify-content-center mb-2 mt-3">
         <h4>Groups</h4>
         <a [routerLink]="['/dashboard/addGroup']" class="ml-5 btn btn-outline-secondary btn-circle btn-circle-sm m-1" style="margin-top: 10px;">+</a>
@@ -69,4 +74,106 @@
         </ul>
       </div>
     </div>
+
+  </div>
+</div>
+<div class="modal fade" id="settleUpModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Settle Up</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form style="margin-top: 1rem;" #form="ngForm" novalidate (ngSubmit)="onSubmit(form)">
+          <input hidden id="groupId" name="groupId" [(ngModel)]="groupId" />
+          <div class="form-group row">
+            <label for="payer" class="col-sm-2 col-form-label">Payer</label>
+            <div class="col-sm-5">
+              <input
+                type="email"
+                class="form-control"
+                id="payer"
+                placeholder="Payer's Email"
+                name="payer"
+                [(ngModel)]="payer"
+                #payerField="ngModel"
+                required
+              />
+              <div
+          class="alert-danger"
+          *ngIf="payerField.errors && (payerField.dirty || payerField.touched)"
+        >
+          <span *ngIf="payerField.errors.required">Payer's Email is required</span>
+        </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="payee" class="col-sm-2 col-form-label"
+              >Payee</label
+            >
+            <div class="col-sm-5">
+              <input
+                type="email"
+                class="form-control"
+                id="payee"
+                placeholder="Payee's Email"
+                name="payee"
+                [(ngModel)]="payee"
+                #payeeField="ngModel"
+                required
+              />
+              <div
+          class="alert-danger"
+          *ngIf="payeeField.errors && (payeeField.dirty || payeeField.touched)"
+        >
+          <span *ngIf="payeeField.errors.required">Payee's Email is required</span>
+        </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="amount" class="col-sm-2 col-form-label"
+              >Amount</label
+            >
+            <div class="col-sm-5">
+              <input
+                type="number"
+                class="form-control"
+                id="amount"
+                placeholder="Amount"
+                name="amount"
+                [(ngModel)]="amount"
+                #amountField="ngModel"
+                required
+              />
+              <div
+          class="alert-danger"
+          *ngIf="amountField.errors && (amountField.dirty || amountField.touched)"
+        >
+          <span *ngIf="amountField.errors.required">Amount is required</span>
+        </div>
+            </div>
+          </div>
+
+
+          <div class="form-group row" style="margin-top: 2rem;">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Settle</button>
+              <a type="submit"
+               class="btn btn-outline-warning ml-2" data-dismiss="modal">Cancel</a>
+            </div>
+          </div>
+
+        </form>
+      <!-- </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
 </div>

@@ -476,7 +476,7 @@ export class ExpenseClient {
         return _observableOf<Expense>(<any>null);
     }
 
-    getExpenseBasedOnId(id: number): Observable<Expense> {
+    getExpenseBasedOnId(id: number): Observable<AddExpense> {
         let url_ = this.baseUrl + "/api/Expenses/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -499,14 +499,14 @@ export class ExpenseClient {
                 try {
                     return this.processGetExpenseBasedOnId(<any>response_);
                 } catch (e) {
-                    return <Observable<Expense>><any>_observableThrow(e);
+                    return <Observable<AddExpense>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Expense>><any>_observableThrow(response_);
+                return <Observable<AddExpense>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetExpenseBasedOnId(response: HttpResponseBase): Observable<Expense> {
+    protected processGetExpenseBasedOnId(response: HttpResponseBase): Observable<AddExpense> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -517,7 +517,7 @@ export class ExpenseClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Expense.fromJS(resultData200);
+            result200 = AddExpense.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1809,95 +1809,103 @@ export interface IExpense {
 }
 
 export class AddExpense implements IAddExpense {
-    expenseId?: number;
-    shares?: Share[] | undefined;
-    description?: string | undefined;
-    groupId?: number | undefined;
-    amount?: number;
-    splitType?: string | undefined;
-    createdBy?: string | undefined;
-    date?: Date;
-    isDeleted?: boolean;
-    isSettled?: boolean;
-    paidBy?: UserExpenseMapper[] | undefined;
+  expenseId?: number;
+  user?: ApplicationUser | undefined;
+  group?: Group | undefined;
+  shares?: Share[] | undefined;
+  description?: string | undefined;
+  groupId?: number | undefined;
+  amount?: number;
+  splitType?: string | undefined;
+  createdBy?: string | undefined;
+  date?: Date;
+  isDeleted?: boolean;
+  isSettled?: boolean;
+  paidBy?: UserExpenseMapper[] | undefined;
 
-    constructor(data?: IAddExpense) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
+  constructor(data?: IAddExpense) {
+      if (data) {
+          for (var property in data) {
+              if (data.hasOwnProperty(property))
+                  (<any>this)[property] = (<any>data)[property];
+          }
+      }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.expenseId = _data["expenseId"];
-            if (Array.isArray(_data["shares"])) {
-                this.shares = [] as any;
-                for (let item of _data["shares"])
-                    this.shares!.push(Share.fromJS(item));
-            }
-            this.description = _data["description"];
-            this.groupId = _data["groupId"];
-            this.amount = _data["amount"];
-            this.splitType = _data["splitType"];
-            this.createdBy = _data["createdBy"];
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
-            this.isDeleted = _data["isDeleted"];
-            this.isSettled = _data["isSettled"];
-            if (Array.isArray(_data["paidBy"])) {
-                this.paidBy = [] as any;
-                for (let item of _data["paidBy"])
-                    this.paidBy!.push(UserExpenseMapper.fromJS(item));
-            }
-        }
-    }
+  init(_data?: any) {
+      if (_data) {
+          this.expenseId = _data["expenseId"];
+          this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+          this.group = _data["group"] ? Group.fromJS(_data["group"]) : <any>undefined;
+          if (Array.isArray(_data["shares"])) {
+              this.shares = [] as any;
+              for (let item of _data["shares"])
+                  this.shares!.push(Share.fromJS(item));
+          }
+          this.description = _data["description"];
+          this.groupId = _data["groupId"];
+          this.amount = _data["amount"];
+          this.splitType = _data["splitType"];
+          this.createdBy = _data["createdBy"];
+          this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+          this.isDeleted = _data["isDeleted"];
+          this.isSettled = _data["isSettled"];
+          if (Array.isArray(_data["paidBy"])) {
+              this.paidBy = [] as any;
+              for (let item of _data["paidBy"])
+                  this.paidBy!.push(UserExpenseMapper.fromJS(item));
+          }
+      }
+  }
 
-    static fromJS(data: any): AddExpense {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddExpense();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): AddExpense {
+      data = typeof data === 'object' ? data : {};
+      let result = new AddExpense();
+      result.init(data);
+      return result;
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["expenseId"] = this.expenseId;
-        if (Array.isArray(this.shares)) {
-            data["shares"] = [];
-            for (let item of this.shares)
-                data["shares"].push(item.toJSON());
-        }
-        data["description"] = this.description;
-        data["groupId"] = this.groupId;
-        data["amount"] = this.amount;
-        data["splitType"] = this.splitType;
-        data["createdBy"] = this.createdBy;
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
-        data["isDeleted"] = this.isDeleted;
-        data["isSettled"] = this.isSettled;
-        if (Array.isArray(this.paidBy)) {
-            data["paidBy"] = [];
-            for (let item of this.paidBy)
-                data["paidBy"].push(item.toJSON());
-        }
-        return data;
-    }
+  toJSON(data?: any) {
+      data = typeof data === 'object' ? data : {};
+      data["expenseId"] = this.expenseId;
+      data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+      data["group"] = this.group ? this.group.toJSON() : <any>undefined;
+      if (Array.isArray(this.shares)) {
+          data["shares"] = [];
+          for (let item of this.shares)
+              data["shares"].push(item.toJSON());
+      }
+      data["description"] = this.description;
+      data["groupId"] = this.groupId;
+      data["amount"] = this.amount;
+      data["splitType"] = this.splitType;
+      data["createdBy"] = this.createdBy;
+      data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+      data["isDeleted"] = this.isDeleted;
+      data["isSettled"] = this.isSettled;
+      if (Array.isArray(this.paidBy)) {
+          data["paidBy"] = [];
+          for (let item of this.paidBy)
+              data["paidBy"].push(item.toJSON());
+      }
+      return data;
+  }
 }
 
 export interface IAddExpense {
-    expenseId?: number;
-    shares?: Share[] | undefined;
-    description?: string | undefined;
-    groupId?: number | undefined;
-    amount?: number;
-    splitType?: string | undefined;
-    createdBy?: string | undefined;
-    date?: Date;
-    isDeleted?: boolean;
-    isSettled?: boolean;
-    paidBy?: UserExpenseMapper[] | undefined;
+  expenseId?: number;
+  user?: ApplicationUser | undefined;
+  group?: Group | undefined;
+  shares?: Share[] | undefined;
+  description?: string | undefined;
+  groupId?: number | undefined;
+  amount?: number;
+  splitType?: string | undefined;
+  createdBy?: string | undefined;
+  date?: Date;
+  isDeleted?: boolean;
+  isSettled?: boolean;
+  paidBy?: UserExpenseMapper[] | undefined;
 }
 
 export class UserModel implements IUserModel {
@@ -2436,7 +2444,7 @@ export class GroupReturn implements IGroupReturn {
     groupId?: number;
     name?: string | undefined;
     userId?: string | undefined;
-
+    createdBy?: string | undefined;
     constructor(data?: IGroupReturn) {
         if (data) {
             for (var property in data) {
@@ -2451,6 +2459,7 @@ export class GroupReturn implements IGroupReturn {
             this.groupId = _data["groupId"];
             this.name = _data["name"];
             this.userId = _data["userId"];
+            this.createdBy = _data["createdBy"];
         }
     }
 
@@ -2466,6 +2475,7 @@ export class GroupReturn implements IGroupReturn {
         data["groupId"] = this.groupId;
         data["name"] = this.name;
         data["userId"] = this.userId;
+        data["createdBy"] = this.createdBy;
         return data;
     }
 }
@@ -2474,6 +2484,7 @@ export interface IGroupReturn {
     groupId?: number;
     name?: string | undefined;
     userId?: string | undefined;
+    createdBy?: string | undefined;
 }
 
 export class AddGroup implements IAddGroup {

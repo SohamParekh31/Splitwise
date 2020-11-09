@@ -31,7 +31,7 @@ namespace Splitwise.Core.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<Expense> GetExpenseBasedOnId(int id)
+        public ActionResult<AddExpense> GetExpenseBasedOnId(int id)
         {
             var expense = _expenseRepository.GetExpenseBasedOnId(id);
             return Ok(expense);

@@ -10,6 +10,7 @@ export class MyExpenseComponent implements OnInit {
 
   p: number = 1;
   expense:Splitwise.Expense[] = [];
+
   constructor(private expenseService:Splitwise.ExpenseClient) { }
 
   ngOnInit(): void {

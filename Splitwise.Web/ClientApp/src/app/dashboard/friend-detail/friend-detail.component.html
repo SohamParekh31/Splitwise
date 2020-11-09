@@ -16,14 +16,14 @@
     </div>
     <div class="mt-4">
       <h5>Owes To</h5>
-      <ul>
-        <li class="card-text mt-1" *ngFor="let youOwe of friendDetail?.owsto">{{youOwe.amount  | currency:'INR'}} to You</li>
+      <ul *ngFor="let youOwe of friendDetail?.owsto">
+        <li class="card-text mt-1"  *ngIf="youOwe.amount != 0 || youOwe.amount > 0">{{youOwe.amount  | currency:'INR'}} to You</li>
       </ul>
     </div>
     <div class="mt-4">
       <h5>Owes From</h5>
-      <ul>
-        <li class="card-text mt-1" *ngFor="let oweFrom of friendDetail?.owesfrom">{{oweFrom.amount  | currency:'INR'}} from You</li>
+      <ul *ngFor="let oweFrom of friendDetail?.owesfrom">
+        <li class="card-text mt-1" *ngIf="oweFrom.amount != 0 || oweFrom.amount > 0">{{oweFrom.amount  | currency:'INR'}} from You</li>
       </ul>
     </div>
     <button class="btn btn-outline-danger mt-1" (click)="DeleteFriend(friendDetail?.user)">Delete Friend</button>
