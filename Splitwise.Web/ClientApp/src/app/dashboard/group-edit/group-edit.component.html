@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h2>Add Group</h2>
+  <h2>Edit Group</h2>
     <form style="margin-top: 1rem;" (ngSubmit)="onSubmit()" [formGroup]="groupForm" >
       <div class="form-group row">
         <label for="groupName" class="col-sm-2 col-form-label">Name</label>
@@ -14,26 +14,11 @@
         </div>
       </div>
 
-      <!-- <div class="form-group row">
-        <label for="datetime" class="col-sm-2 col-form-label"
-          >Date</label
-        >
-        <div class="col-sm-10">
-          <input
-            type="date"
-            formControlName="date"
-            class="form-control"
-            id="datetime"
-            placeholder="Date"
-          />
-        </div>
-      </div> -->
-
-      <div form-group>
+      <div class="form-group">
         <label class="col-form-label">Group Members</label>
       <div formArrayName="users" *ngFor="let g of users.controls; let i=index">
         <div [formGroupName]="i" class="row">
-          <input type="text" class="form-control col-sm-2" placeholder="Name" formControlName="name" id="nameId" style="margin-right:10px" />
+          <input type="text" class="form-control col-sm-2" placeholder="Name" formControlName="name" id="nameId" style="margin-right:10px"  />
           <input type="text" class="form-control col-sm-2" id="emailId" placeholder="Email" formControlName="email" />
           <a (click)="addGroupMember()" class="btn btn-outline-primary ml-1">+</a>
           <a *ngIf="users.controls.length > 1" (click)="removeGroupMember(i)" class="btn btn-outline-danger ml-1">-</a>
@@ -44,7 +29,7 @@
 
       <div class="form-group row" style="margin-top: 2rem;">
         <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="submit" class="btn btn-primary">Edit</button>
           <a type="submit" [routerLink]="['/dashboard/splitwise']"
            class="btn btn-outline-warning ml-2">Cancel</a>
         </div>

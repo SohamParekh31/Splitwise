@@ -15,7 +15,7 @@ namespace Splitwise.DomainModel.Models
         [ForeignKey("Payee")]
         public ApplicationUser PayeeUser { get; set; }
         public float Paid_Amount { get; set; }
-        public int SettlementId { get; set; }
+        public int? SettlementId { get; set; }
         [ForeignKey("SettlementId")]
         public Settlement Settlement { get; set; }
     }

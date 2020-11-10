@@ -126,7 +126,7 @@ namespace Splitwise.Repository.GroupRepository
             group.SimplyfyDebits = editGroup.SimplyfyDebits;
             group.IsDeleted = editGroup.IsDeleted;
             _appDbContext.Groups.Update(group);
-            GroupMember member = new GroupMember()
+            GroupMember member = new GroupMember() 
             {
                 GroupId = group.GroupId,
                 UserId = group.CreatedBy

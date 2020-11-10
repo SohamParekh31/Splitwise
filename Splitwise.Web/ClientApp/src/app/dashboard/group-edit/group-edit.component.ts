@@ -28,6 +28,7 @@ export class GroupEditComponent implements OnInit {
       }
     )
     this.groupForm = this.fb.group({
+      groupId:0,
       name:'',
       date:'',
       createdBy:'',
@@ -39,31 +40,25 @@ export class GroupEditComponent implements OnInit {
 
   getGroupById(id: number){
     this.groupService.getGroupBasedOnId(id).subscribe(
-      (data) => {
-        this.groupDetails = data;
-        this.setGroupValue(this.groupDetails);
+      (data:Splitwise.AddGroup) => {
+        this.groupForm = this.fb.group({
+          groupId: data.groupId,
+          name: data.name,
+          date: data.date,
+          createdBy: data.createdBy,
+          simplyfyDebits: data.simplyfyDebits,
+          isDeleted: data.isDeleted,
+          users:this.fb.array(data.users.map(datum => this.SetUsers(datum)))
+        });
       }
     );
   }
-  setGroupValue(groupDetails: Splitwise.AddGroup){
-    this.groupForm.patchValue({
-      name: groupDetails.name,
-      date: groupDetails.date,
-      createdBy: groupDetails.createdBy,
-      simplyfyDebits: groupDetails.simplyfyDebits,
-      isDeleted: groupDetails.isDeleted
+
+  SetUsers(datum) {
+    return this.fb.group({
+      email: this.fb.control(datum.email),
+      name: this.fb.control(datum.name)
     });
-    this.groupForm.setControl('users',this.SetUsers(groupDetails.users));
-  }
-  SetUsers(users):FormArray{
-    const FormArr = new FormArray([]);
-    FormArr.push(users.forEach((s: { name: any; email: any; }) => {
-      this.fb.group({
-        name: s.name,
-        email:s.email
-      });
-    }))
-    return FormArr;
   }
 
   addGroupMember(){
@@ -80,10 +75,9 @@ export class GroupEditComponent implements OnInit {
   }
   onSubmit(){
     this.group = this.groupForm.value;
-    console.log(this.group);
     this.groupService.editGroup(this.ID,this.group).subscribe(
       () => {
-        console.log("Group Added Successfully!");
+        console.log("Group Edited Successfully!");
         this.route.navigate(['/dashboard/splitwise']);
       }
     );

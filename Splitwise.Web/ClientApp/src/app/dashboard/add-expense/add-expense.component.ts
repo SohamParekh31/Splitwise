@@ -72,7 +72,6 @@ export class AddExpenseComponent implements OnInit {
   }
   onSubmit(){
     this.expense = this.expenseForm.value;
-    console.log(this.expense);
     this.expenseServie.postExpense(this.expense).subscribe(
       () => {
         console.log("Expense Added!");

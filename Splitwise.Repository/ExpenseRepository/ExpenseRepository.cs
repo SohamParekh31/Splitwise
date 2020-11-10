@@ -243,52 +243,91 @@ namespace Splitwise.Repository.ExpenseRepository
             return getExpense;
         }
 
-        public PaymentBook SettlementExpense(SettleUp settleUp,string email)
+        public void SettlementExpense(SettleUp settleUp,string email)
         {
             var user = _userManager.FindByEmailAsync(email).Result;
             var payerDetails = _userManager.FindByEmailAsync(settleUp.Payer).Result;
             var payeeDetails = _userManager.FindByEmailAsync(settleUp.Payee).Result;
-            Settlement settlement;
-            if (settleUp.GroupId != null)
+            var settlement = _appDbContext.Settlements.Where(x => x.Payee == payeeDetails.Id && x.Payer == payerDetails.Id).ToList();
+            var settlementReverse = _appDbContext.Settlements.Where(x => x.Payee == payerDetails.Id && x.Payer == payeeDetails.Id).ToList();
+            foreach (var item in settlement)
             {
-                settlement = _appDbContext.Settlements.FirstOrDefault(x => x.Payee == payeeDetails.Id && x.Payer == payerDetails.Id && x.GroupId == settleUp.GroupId);
-            }
-            else
-            {
-                settlement = _appDbContext.Settlements.FirstOrDefault(x => x.Payee == payeeDetails.Id && x.Payer == payerDetails.Id);
-            }
-            PaymentBook paymentBook = new PaymentBook()
-            {
-                Payer = payerDetails.Id,
-                Payee = payeeDetails.Id,
-                Paid_Amount = settleUp.Amount,
-                SettlementId = settlement.SettlementId
-            };
-            _appDbContext.PaymentBooks.Add(paymentBook);
-            settlement.Amount -= settleUp.Amount;
-            _appDbContext.Settlements.Update(settlement);
-            if(payeeDetails.Id == user.Id)
-            {
-                Activity activity = new Activity()
+                var settlementSum = settlement.Sum(x => x.Amount);
+                if(settlementReverse.Count != 0)
                 {
-                    Description = "You Received Payment of Rs."+settleUp.Amount+" from " + payerDetails.FirstName,
-                    UserId = user.Id,
-                    Date = DateTime.Today
-                };
-                _appDbContext.Activities.Add(activity);
-            }
-            else if(payerDetails.Id == user.Id)
-            {
-                Activity activity = new Activity()
+                    settlementSum = settlement.Sum(x => x.Amount) - settlementReverse.Sum(x => x.Amount);
+                    if(settlementSum > 0)
+                    {
+                        foreach (var settlementreverse in settlementReverse)
+                        {
+                            settlementreverse.Amount = 0;
+                            _appDbContext.Settlements.Update(settlementreverse);
+
+                            _appDbContext.SaveChanges();
+                        }
+                    }
+                }
+                if (item.Amount != 0 && settleUp.Amount >= 0)
                 {
-                    Description = "You Paid  Rs." + settleUp.Amount + " to " + payeeDetails.FirstName,
-                    UserId = user.Id,
-                    Date = DateTime.Today
-                };
-                _appDbContext.Activities.Add(activity);
+                    PaymentBook paymentBook = new PaymentBook()
+                    {
+                        Payer = payerDetails.Id,
+                        Payee = payeeDetails.Id,
+                        Paid_Amount = settleUp.Amount,
+                    };
+                    _appDbContext.PaymentBooks.Add(paymentBook);
+                    if (payeeDetails.Id == user.Id)
+                    {
+                        Activity activity = new Activity()
+                        {
+                            Description = "You Received Payment of Rs." + settleUp.Amount + " from " + payerDetails.FirstName,
+                            UserId = user.Id,
+                            Date = DateTime.Today
+                        };
+                        _appDbContext.Activities.Add(activity);
+                    }
+                    else if (payerDetails.Id == user.Id)
+                    {
+                        Activity activity = new Activity()
+                        {
+                            Description = "You Paid  Rs." + settleUp.Amount + " to " + payeeDetails.FirstName,
+                            UserId = user.Id,
+                            Date = DateTime.Today
+                        };
+                        _appDbContext.Activities.Add(activity);
+                    }
+                    _appDbContext.SaveChanges();
+                    if ((settlementSum - settleUp.Amount) == 0)
+                    {
+                        foreach (var item1 in settlement)
+                        {
+                            item1.Amount = 0;
+                            _appDbContext.Settlements.Update(item1);
+                            _appDbContext.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item1 in settlement)
+                        {
+                            var result = settleUp.Amount - item1.Amount;
+                            settleUp.Amount -= item1.Amount;
+                            if(result != 0 && result > item1.Amount)
+                            {
+                                item1.Amount = 0;
+                                _appDbContext.Settlements.Update(item1);
+                                _appDbContext.SaveChanges();
+                            }
+                            else
+                            {
+                                item1.Amount = result * -1;
+                                _appDbContext.Settlements.Update(item1);
+                                _appDbContext.SaveChanges();
+                            }
+                        }
+                    }
+                }
             }
-            _appDbContext.SaveChanges();
-            return paymentBook;
         }
     }
 }

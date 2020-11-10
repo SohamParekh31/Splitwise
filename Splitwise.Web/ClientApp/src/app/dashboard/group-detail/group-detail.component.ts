@@ -53,12 +53,11 @@ export class GroupDetailComponent implements OnInit {
   }
   onSubmit(form){
     this.settleUp = form.value;
-    console.log(this.settleUp);
-    location.reload();
-    // this.expenseService.settlment(this.settleUp).subscribe(
-    //   () => {
-    //     console.log("Settlement Success!");
-    //   }
-    // );
+    this.expenseService.settlment(this.settleUp).subscribe(
+      () => {
+        console.log("Settlement Success!");
+        location.reload();
+      }
+    );
   }
 }

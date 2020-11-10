@@ -156,12 +156,11 @@ namespace Splitwise.Repository.AccountRepository
                         }
                         else
                         {
-                            var appuser = userManager.FindByIdAsync(item.name).Result;
                             PayerModel payerModel1 = new PayerModel
                             {
                                 Amount = item.amount,
                                 PayerId = item.name,
-                                Payer = appuser
+                                Payer = user
                             };
                             Owsfrom.Add(payerModel1);
                         }
