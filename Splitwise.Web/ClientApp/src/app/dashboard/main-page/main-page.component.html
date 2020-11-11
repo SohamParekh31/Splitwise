@@ -43,7 +43,7 @@
     <div class="w3-card-4 mt-5 col-sm-3" style="margin-left: 14rem;height: 220px;">
       <div class="w3-container row d-flex justify-content-center mb-2 mt-3">
         <h4>Friend</h4>
-        <a [routerLink]="['/dashboard/addFriend']" class="ml-5 btn btn-outline-secondary btn-circle btn-circle-sm m-1">+</a>
+        <a [routerLink]="['/dashboard/addFriend']" class="btn btn-outline-secondary" style="margin-left: 58%;border-radius: 50rem;">+</a>
       </div>
       <div class="w3-container" style="overflow-y: scroll;margin-top: 10px;">
         <ul class="w3-ul" *ngFor="let friend of friend">
@@ -55,7 +55,7 @@
     <div class="w3-card-4 mt-5 col-sm-3" style="margin-left: 3rem;height: 220px">
       <div class="w3-container row d-flex justify-content-center mb-2 mt-3">
         <h4>Groups</h4>
-        <a [routerLink]="['/dashboard/addGroup']" class="ml-5 btn btn-outline-secondary btn-circle btn-circle-sm m-1" style="margin-top: 10px;">+</a>
+        <a [routerLink]="['/dashboard/addGroup']" class="btn btn-outline-secondary" style="margin-left: 56%;border-radius: 50rem;">+</a>
       </div>
       <div class="w3-container" style="overflow-y: scroll;margin-top: 10px;">
         <ul class="w3-ul" *ngFor="let group of userModel?.groups">

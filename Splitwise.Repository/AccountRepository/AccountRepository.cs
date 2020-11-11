@@ -118,10 +118,23 @@ namespace Splitwise.Repository.AccountRepository
                                      name = Owesfrom.Key,
                                      amount = Owesfrom.Sum(x => x.Amount)
                                  }).ToList();
+            if(owesFromGroup.Count == 0)
+            {
+                foreach (var item in owesToGroup)
+                {
+                    var user = userManager.FindByIdAsync(item.name).Result;
+                    PayerModel payerModel = new PayerModel
+                    {
+                        Amount = item.amount,
+                        Payer = user,
+                        PayerId = user.Id
+                    };
+                    Owsto.Add(payerModel);
+                }
+            }
             foreach (var item in owesFromGroup)
             {
                 var user = userManager.FindByIdAsync(item.name).Result;
-
                 
                 if (owesToGroup.Count != 0)
                 {
