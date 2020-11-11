@@ -16,6 +16,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { GroupEditComponent } from './group-edit/group-edit.component';
 import { FriendDetailComponent } from './friend-detail/friend-detail.component';
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
+import { ExpenseEditComponent } from './expense-edit/expense-edit.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ExpenseDetailComponent } from './expense-detail/expense-detail.componen
     GroupDetailComponent,
     GroupEditComponent,
     FriendDetailComponent,
-    ExpenseDetailComponent
+    ExpenseDetailComponent,
+    ExpenseEditComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { ExpenseDetailComponent } from './expense-detail/expense-detail.componen
       { path: 'myGroups', component: MyGroupComponent,canActivate:[AuthGuard]},
       { path: 'myExpense', component: MyExpenseComponent,canActivate:[AuthGuard]},
       { path: 'myExpense/:id', component: ExpenseDetailComponent,canActivate:[AuthGuard]},
+      { path: 'myExpense/Edit/:id', component: ExpenseEditComponent,canActivate:[AuthGuard]},
       { path: 'addGroup', component: AddGroupComponent,canActivate:[AuthGuard]},
       { path: 'addExpense', component: AddExpenseComponent,canActivate:[AuthGuard]},
       { path: 'addFriend', component: AddFriendComponent,canActivate:[AuthGuard]},

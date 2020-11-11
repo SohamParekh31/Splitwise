@@ -12,7 +12,7 @@
         <ul class="w3-ul">
           <li>Name : {{userModel?.user.firstName}}</li>
           <li>Email : {{userModel?.user.email}}</li>
-          <li>Balance : {{userModel?.user.balance}}</li>
+          <li>Balance : {{balance | currency:'INR'}}</li>
         </ul>
       </div>
     </div>

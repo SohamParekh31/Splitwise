@@ -15,15 +15,21 @@ export class MainPageComponent implements OnInit {
   settleUp:Splitwise.SettleUp;
   friend:Splitwise.Friend[] = [];
   userModel:Splitwise.UserModel;
+  balance;
   constructor(private friendService:Splitwise.FriendClient,
             private accountService:Splitwise.AccountClient,
             private expenseService:Splitwise.ExpenseClient) { }
 
   ngOnInit(): void {
+    var result = 0.0;
     this.accountService.getUserInfo().subscribe(
-      (data) => {
+      (data:Splitwise.UserModel) => {
         this.userModel = data;
-        //console.log(this.userModel);
+        this.getBalance(data);
+        // data.owesfrom.forEach(s => {
+        //   result = s.amount+result;
+        // })
+        // console.log(result);
       }
     );
     this.friendService.getFriendList().subscribe(
@@ -31,6 +37,18 @@ export class MainPageComponent implements OnInit {
         this.friend = data
       }
     );
+  }
+  getBalance(model:Splitwise.UserModel){
+    var resultOwesFrom = 0.0;
+    var resultOwesTo = 0.0;
+    model.owesfrom.forEach(s => {
+      resultOwesFrom = s?.amount + resultOwesFrom;
+    });
+    model.owsto.forEach(s => {
+      resultOwesTo = s?.amount + resultOwesTo;
+    });
+    this.balance = resultOwesFrom - resultOwesTo;
+    console.log(this.balance);
   }
 
   onSubmit(form){

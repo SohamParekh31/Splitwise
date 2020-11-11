@@ -23,6 +23,11 @@
         class="btn btn-outline-primary mr-2"
         ><i class="fa fa-info-circle" aria-hidden="true"></i
       ></a>
+      <a
+        [routerLink]="['/dashboard/myExpense/Edit', expense.expenseId]"
+        class="btn btn-outline-primary mr-2"
+        ><i class="far fa-edit"></i
+      ></a>
       <a (click)="deleteExpense(expense)" class="btn btn-outline-danger"
         ><i class="far fa-trash-alt"></i
       ></a>

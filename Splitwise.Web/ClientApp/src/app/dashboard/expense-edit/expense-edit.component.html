@@ -1,0 +1,161 @@
+<div class="container mt-3">
+  <h2>Edit Expense</h2>
+  <form
+    style="margin-top: 1rem"
+    (ngSubmit)="onSubmit()"
+    [formGroup]="expenseForm"
+  >
+    <div class="form-group row">
+      <label for="groupName" class="col-sm-2 col-form-label">Name</label>
+      <div class="col-sm-10">
+        <input
+          type="text"
+          class="form-control"
+          id="groupName"
+          formControlName="description"
+          placeholder="Expense Name"
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+      <div class="col-sm-10">
+        <input
+          type="number"
+          formControlName="amount"
+          class="form-control"
+          id="amount"
+          placeholder="Amount"
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="splittype" class="col-sm-2 col-form-label">Split Type</label>
+      <div class="col-sm-10">
+        <select
+          type="text"
+          formControlName="splitType"
+          class="form-control"
+          id="splittype"
+          placeholder="Split Type"
+        >
+        <option value="Equally">Equally</option>
+        <option value="Percentage">Percentage</option>
+      </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="splittype" class="col-sm-2 col-form-label">Group</label>
+      <div class="col-sm-10">
+        <select
+          type="text"
+          formControlName="groupId"
+          class="form-control"
+          id="splittype"
+          placeholder="Group Name"
+        >
+        <option class="dropdown-item" *ngFor="let group of group" [ngValue]="group.groupId">{{group.name}}</option>
+      </select>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-form-label">Paid By</label>
+      <div
+        formArrayName="paidBy"
+        *ngFor="let g of paidBy.controls; let i = index"
+      >
+        <div [formGroupName]="i" class="row">
+          <input
+            type="text"
+            class="form-control col-sm-2 mr-2"
+            placeholder="Name"
+            formControlName="name"
+            id="nameId"
+          />
+          <input
+            type="text"
+            class="form-control col-sm-2 mr-2"
+            id="emailId"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <input
+            type="number"
+            class="form-control col-sm-2"
+            id="emailId"
+            placeholder="Amount"
+            formControlName="paid_Amount"
+          />
+          <a (click)="addpaidBy()" class="btn btn-outline-primary ml-2"
+            >+</a
+          >
+          <a *ngIf="paidBy.controls.length > 1" (click)="removepaidBy(i)" class="btn btn-outline-danger ml-1">-</a>
+        </div>
+        <br />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-form-label">Expense Members (Also Include User who Paid!)</label>
+      <div
+        formArrayName="shares"
+        *ngFor="let g of shares.controls; let i = index"
+      >
+        <div [formGroupName]="i" class="row">
+          <input
+            type="text"
+            class="form-control col-sm-2 mr-2"
+            placeholder="Name"
+            formControlName="name"
+            id="nameId"
+          />
+          <input
+            type="text"
+            class="form-control col-sm-2 mr-2"
+            id="emailId"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <input
+            type="number"
+            class="form-control col-sm-2 mr-2"
+            id="emailId"
+            placeholder="Share Percentage"
+            formControlName="share_Percentage"
+            *ngIf="expenseForm.get('splitType').value == 'Percentage'"
+          />
+          <input
+            type="number"
+            class="form-control col-sm-2"
+            id="emailId"
+            placeholder="Share Amount"
+            formControlName="share_Amount"
+            *ngIf="expenseForm.get('splitType').value == 'UnEqually'"
+          />
+          <a (click)="addShareMember()" class="btn btn-outline-primary ml-2"
+            >+</a
+          >
+          <a *ngIf="shares.controls.length > 1" (click)="removeShareMember(i)" class="btn btn-outline-danger ml-1">-</a>
+        </div>
+        <br />
+      </div>
+    </div>
+
+    <div class="form-group row" style="margin-top: 2rem">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a
+          type="submit"
+          [routerLink]="['/dashboard/splitwise']"
+          class="btn btn-outline-warning ml-2"
+          >Cancel</a
+        >
+      </div>
+    </div>
+  </form>
+</div>
