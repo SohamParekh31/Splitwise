@@ -37,7 +37,7 @@ namespace Splitwise.Repository.ExpenseRepository
             var group = _appDbContext.Groups.FirstOrDefault(x => x.GroupId == addExpense.GroupId);
             Activity activity = new Activity()
             {
-                Description = "You Added Expense "+ addExpense.Description + " in "+ group.Name,
+                Description = "You Added Expense " + addExpense.Description + " in " + group.Name,
                 UserId = addExpense.CreatedBy,
                 Date = addExpense.Date,
             };
@@ -64,19 +64,19 @@ namespace Splitwise.Repository.ExpenseRepository
         public void AddExpenseInfo(AddExpense addExpense, Expense expense)
         {
             float exp = 0;
-            if(addExpense.SplitType == "Percentage")
+            if (addExpense.SplitType == "Percentage")
             {
                 foreach (var item in addExpense.Shares)
                 {
                     foreach (var item1 in addExpense.PaidBy)
                     {
-                        if(item.Email != item1.Email)
+                        if (item.Email != item1.Email)
                             exp += (item.Share_Percentage * addExpense.Amount) / 100;
                     }
-                    
+
                 }
             }
-            
+
             foreach (var item in addExpense.Shares)
             {
                 foreach (var item1 in addExpense.PaidBy)
@@ -136,24 +136,25 @@ namespace Splitwise.Repository.ExpenseRepository
                             ExpenseInfo expenseInfo = new ExpenseInfo();
                             expenseInfo.ExpenseId = expense.ExpenseId;
                             expenseInfo.Paid_Amount = 0;
-                            expenseInfo.Borrow_Amount = addExpense.Amount / addExpense.Shares.Count;
+                            expenseInfo.Borrow_Amount = (addExpense.Amount / addExpense.Shares.Count) / addExpense.PaidBy.Count;
                             expenseInfo.UserId = user.Id;
-                            expenseInfo.Share_Amount = addExpense.Amount / addExpense.Shares.Count;
+                            expenseInfo.Share_Amount = (addExpense.Amount / addExpense.Shares.Count) / addExpense.PaidBy.Count;
                             expenseInfo.Lent_Amount = 0;
                             _appDbContext.ExpenseInfos.Add(expenseInfo);
+
                         }
                         Settlement settlement = new Settlement();
                         settlement.ExpenseId = expense.ExpenseId;
                         settlement.Payer = user.Id;
                         settlement.Payee = userItem1.Id;
                         settlement.Date = addExpense.Date;
-                        settlement.Amount = addExpense.Amount / addExpense.Shares.Count;
+                        settlement.Amount = (addExpense.Amount / addExpense.Shares.Count) / addExpense.PaidBy.Count;
                         if (addExpense.GroupId != null)
                             settlement.GroupId = addExpense.GroupId;
-                        if(settlement.Payer != settlement.Payee)
+                        if (settlement.Payer != settlement.Payee)
                             _appDbContext.Settlements.Add(settlement);
-                    } 
-                    
+                    }
+
                 }
             }
             _appDbContext.SaveChanges();
@@ -220,7 +221,7 @@ namespace Splitwise.Repository.ExpenseRepository
             foreach (var item in expenseInfo)
             {
                 var appUser = _userManager.FindByIdAsync(item.UserId).Result;
-                if(item.Paid_Amount != 0)
+                if (item.Paid_Amount != 0)
                 {
                     UserExpenseMapper userExpenseMapper = new UserExpenseMapper()
                     {
@@ -243,7 +244,7 @@ namespace Splitwise.Repository.ExpenseRepository
             return getExpense;
         }
 
-        public void SettlementExpense(SettleUp settleUp,string email)
+        public void SettlementExpense(SettleUp settleUp, string email)
         {
             var user = _userManager.FindByEmailAsync(email).Result;
             var payerDetails = _userManager.FindByEmailAsync(settleUp.Payer).Result;
@@ -253,10 +254,10 @@ namespace Splitwise.Repository.ExpenseRepository
             foreach (var item in settlement)
             {
                 var settlementSum = settlement.Sum(x => x.Amount);
-                if(settlementReverse.Count != 0)
+                if (settlementReverse.Count != 0)
                 {
                     settlementSum = settlement.Sum(x => x.Amount) - settlementReverse.Sum(x => x.Amount);
-                    if(settlementSum > 0)
+                    if (settlementSum > 0)
                     {
                         foreach (var settlementreverse in settlementReverse)
                         {
@@ -312,7 +313,7 @@ namespace Splitwise.Repository.ExpenseRepository
                         {
                             var result = settleUp.Amount - item1.Amount;
                             settleUp.Amount -= item1.Amount;
-                            if(result != 0 && result > item1.Amount)
+                            if (result != 0 && result > item1.Amount)
                             {
                                 item1.Amount = 0;
                                 _appDbContext.Settlements.Update(item1);

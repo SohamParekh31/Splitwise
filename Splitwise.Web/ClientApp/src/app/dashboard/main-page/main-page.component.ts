@@ -48,7 +48,6 @@ export class MainPageComponent implements OnInit {
       resultOwesTo = s?.amount + resultOwesTo;
     });
     this.balance = resultOwesFrom - resultOwesTo;
-    console.log(this.balance);
   }
 
   onSubmit(form){

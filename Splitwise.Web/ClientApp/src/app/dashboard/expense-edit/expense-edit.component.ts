@@ -114,9 +114,9 @@ export class ExpenseEditComponent implements OnInit {
   onSubmit() {
     this.expense = this.expenseForm.value;
     console.log(this.expense)
-    // this.expenseServie.postExpense(this.expense).subscribe(() => {
-    //   console.log('Expense Added!');
-    //   this.route.navigate(['/dashboard/splitwise']);
-    // });
+    this.expenseServie.editExpense(this.ID,this.expense).subscribe(() => {
+      console.log('Expense Edited!');
+      this.route.navigate(['/dashboard/splitwise']);
+    });
   }
 }
